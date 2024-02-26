@@ -1,0 +1,518 @@
+% Chapter Template
+
+\chapter{Implementation and Experiments} % Main chapter title
+
+\label{Chapter5}
+
+%----------------------------------------------------------------------------------------
+%	SECTION 1
+%----------------------------------------------------------------------------------------
+\section{Tools and Technologies}
+In conducting this research, careful consideration was given to the selection of tools and technologies that would best support the implementation, experimentation, and analysis processes. This section provides an overview of the programming languages, machine learning frameworks, data processing tools, and other technologies employed throughout the research.
+
+%-----------------------------------
+%	SUBSECTION 1
+%-----------------------------------
+\subsection{Programming Language}
+The primary programming language for this research was Python, chosen for its versatility, rich ecosystem, and widespread use in machine learning. Python's readability and extensive libraries facilitated efficient coding and experimentation.
+
+%-----------------------------------
+%	SUBSECTION 2
+%-----------------------------------
+\subsection{Machine Learning Frameworks}
+
+\subsubsection{PyTorch}
+PyTorch \cite{PyTorch} was selected as the primary deep learning framework due to its flexibility which aligned well with the nature of the tasks involving customized model architectures and strong community support which contributed to a fluid development experience.
+
+PyTorch is an open-source machine learning framework developed by Facebook's AI Research lab (FAIR). Its design philosophy emphasizes flexibility, enabling researchers and practitioners to tailor datasets and training procedures to specific requirements. The flexibility offered by PyTorch manifests in two key areas: custom datasets and custom training/validation phases. PyTorch supports automatic differentiation, making it easier to implement and experiment with complex neural network architectures. Its community, extensive documentation, and seamless integration with hardware accelerators like GPUs contribute to its popularity in both research and production.
+
+PyTorch facilitates the creation of the custom dataset through the \textit{torch.utils.data. Dataset} class.\\ 
+By inheriting from this class and implementing the \textit{\_\_len\_\_} and \textit{\_\_getitem\_\_} methods, it's been possible to define datasets tailored to data structure and format used. This capability is invaluable when working with diverse data types, such as images or time-series, allowing seamless integration into PyTorch's data loading utilities.
+
+PyTorch's flexibility extends to the training and validation phases, enabling users to define custom training loops, loss functions, and evaluation metrics. This is crucial for experimenting with novel architectures, incorporating domain-specific metrics, or implementing advanced training techniques. The ability to seamlessly integrate custom logic into the training process empowers researchers to push the boundaries of model development.
+
+The deep understanding of this framework and its functionalities has been of primary importance for using third-party models like \textit{HRNet}\cite{sun2019deep} integrating with a customized dataset and ad hoc training and validation phase.
+
+%-----------------------------------
+%	SUBSECTION 3
+%-----------------------------------
+\subsection{Data Processing and Analysis Tools}
+
+\subsubsection{Pandas}
+Pandas is a powerful data manipulation and analysis library for Python. It provides data structures like DataFrames that facilitate the handling of structured data. Pandas excels in data cleaning, manipulation, and exploration tasks, offering a plurality of functions for indexing, merging, grouping, and aggregating data. Its integration with other libraries, such as NumPy, makes it a go-to choice for working with labeled data and time series.
+
+Pandas DataFrames offer a convenient and versatile way to handle tabular data, making them an excellent choice for storing and preprocessing data before creating datasets in PyTorch. The integration between Pandas and PyTorch simplifies the transition from data exploration to model training.
+
+\subsubsection{NumPy}
+NumPy is a fundamental library for numerical operations in Python. It provides support for large, multi-dimensional arrays and matrices, along with an assortment of high-level mathematical functions to operate on these arrays.
+
+Moreover, NumPy arrays and PyTorch tensors share several similarities, making them interchangeable in many contexts. These similarities contribute to a smooth integration between the two libraries, facilitating data manipulation and interoperability.\\
+The compatibility between NumPy and PyTorch simplifies data exchange and promotes a cohesive workflow in mixed-library environments.
+
+%-----------------------------------
+%	SUBSECTION 4
+%-----------------------------------
+\subsection{Visualization Libraries}
+\subsubsection{Matplotlib and Seaborn}
+Matplotlib is a versatile 2D plotting library for Python. Seaborn is a statistical data visualization library built on top of Matplotlib. It provides a high-level interface for creating attractive and informative statistical graphics. Seaborn simplifies the process of generating complex visualizations with concise syntax. It is particularly useful for exploring relationships in datasets through specialized plots for categorical data, distribution plots, and regression plots.\\
+All the plots presented in the \textit{Evaluation of Training Dataset} (\textbf{\ref{Chapter5/EvalTraining}}) and in the \textit{Evaluation of Test Datasets} (\textbf{\ref{Chapter5/EvalTest}}) sections are created using this library.
+
+%----------------------------------------------------------------------------------------
+%	SECTION 2
+%----------------------------------------------------------------------------------------
+\section{Experimentation and Evaluation}
+%-----------------------------------
+%	SUBSECTION 1
+%-----------------------------------
+\subsection{Metrics}
+The final pose estimation scores are defined according to \cite{KPEC} score definition, which consists in the identification of translation and rotational errors and their respective scores.\\
+The estimated pose of each image is evaluated using a rotation error $E_R$ and a translation error $E_T$. Lets consider $q^*$ the rotation quaternion ground truth of an image and $q$ its estimation and, analogously, $\textbf{t}^*$ the ground truth translation of an image and $\textbf{t}$ the respective estimation.\\
+The orientation error $E_R$ is calculated as the angular distance between the predicted, $q^*$ and ground truth true $q$ unit quaternions, i.e., the magnitude of the rotation that aligns the target body frame with the camera reference frame.
+\begin{equation}
+    E_R = 2cos^{-1}(|z|)
+\end{equation}
+where $z$ is the real part of the Hamilton product between $q^*$ and the conjugate of $q$, i.e.: \(z + c = q^*\cdot \bar{q}\), and $c$ is the vector part of the Hamilton product.
+The translation errors is defined as the magnitude (2-norm) of difference between the ground-truth (\textbf{t*}) and estimated (\textbf{t}) position vectors from the origin of the camera reference frame to that of the target body frame:
+\begin{equation}
+    E_T = \|\textbf{t}^*-\textbf{t}\|_2
+\end{equation}
+The rotation score $S_R$ is the same as $E_R$, but in radians, while the translation score $S_T$ is defined as the translation error $E_T$ normalized by the ground truth translation:
+\begin{equation}
+    S_T = \frac{\|\textbf{t}^*-\textbf{t}\|_2}{\|\textbf{t}^*\|_2}
+\end{equation}
+which penalizes the position errors more heavily when the target satellite is closer.\\
+The final score is the sum of contributions of both scores.
+\begin{equation}
+    S = S_R + S_T
+\end{equation}
+Additionally, the implemented method is subjected to iterative assessments after the execution of each module. This approach allows to discern and analyze the specific impact and weight that each individual module exerts on the final error. By dissecting the performance at each stage, we gain valuable insights into the contributions of each module, facilitating a comprehensive understanding of the overall system dynamics and optimization potential.
+
+\textbf{Landmark Regression Evaluation Metric}\\
+The \textit{Landmark Regression} module is assessed computing the mean error values, among the set of landmarks identified in the image. The predicted pixel coordinates are compared with the ground truth ones.\\
+\begin{equation}
+\begin{aligned}
+    E_{2D} = \frac{\sum_{i=1}^{N} (\textbf{z}^{*}_{i}-\textbf{z}_i)}{N} \quad \text{with} \; i=1,\dots,N \; \text{landmarks with} \; v=1
+\end{aligned}
+\end{equation}
+where $\textbf{z}_{i}^{*}$ is the \textit{i}-th landmark's ground truth position, $\textbf{z}_{i}$ is the respective prediction and $v$ it is the visibility coefficient.\\
+The overall module error is defined as the L2 norm of the computed mean error:
+\begin{equation}
+    E_{CNN} = \|E_{2D}\|_2
+\end{equation}
+
+\textbf{Landmark Mapping Evaluation Metric}\\
+The \textit{Landmark Mapping} module is assessed similarly to the previous one, computing the L2 norm on the mean 3D position error of landmarks marked with visibility coefficient $v = 1$. The predicted 3D coordinates are compared with the ground truth ones.\\
+\begin{equation}
+\begin{aligned}
+    E_{3D} = \frac{\sum_{i=1}^{N} (\textbf{x}^{*}_{i}-\textbf{x}_i)}{N} \quad \text{with} \; i=1,\dots,N \; \text{landmarks with} \; v=1
+\end{aligned}
+\end{equation}
+where $\textbf{x}^{*}_{i}$ is the ground truth position of the \textit{i}-th landmark, $\textbf{x}_i$, is the respective prediction and $v$ it is the visibility coefficient.\\
+The overall module error is defined as the L2 norm of the computed mean error:
+\begin{equation}
+    E_{NN} = \|E_{3D}\|_2
+\end{equation}
+
+%-----------------------------------
+%	SUBSECTION 2
+%-----------------------------------
+\subsection{Evaluation on Training Dataset}
+\label{Chapter5/EvalTraining}
+Two distinct experiments are conducted to comprehensively evaluate the performance of the implemented method. In the first experiment, the method underwent rigorous testing on the training dataset, where it is exposed to known data. This initial experiment serves as a crucial phase for fine-tuning and optimizing the model's parameters.
+
+\subsubsection{Landmark Regression}
+As predictable, as far as the camera gets closer to the target region, the landmark location prediction becomes more granular and accurate.
+
+It is important to notice that the performed experiment takes into account 40 cm as minimum distance from the target. This is due to an accurate results analysis which reports that in closer positions the number of landmarks in the camera frame is not sufficient to predict correctly the pose.
+
+The \textit{Landmark Regression} module reports an average 2D error $E_{CNN}=1.38 \pm 0.06$ pixels over the sixteen training trajectories, corresponding to the $0.0027\%$ considering $512x512$ images.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.65]{Figures/Chapter5/2D_train.png}
+    \caption[2D error over the training dataset.]{2D error over the training dataset.}
+    \label{fig:2D Train}
+\end{figure}
+
+As it's possible to notice in figure \textbf{\ref{fig:2D-Z Train}}, the performances are quite the same for each training trajectory, due to the fact that the \textit{Landmark Regression} module predictions are not affected by the orientation of the satellite if this not introduces occlusion.\\
+On the other hand the module's performances are strictly affected by the quality and light of the captured image.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{Figures/Chapter5/2D-Z_train.png}
+    \caption[Landmark Regression error over the trajectory range.]{Landmark Regression error over the trajectory range (\textit{z} axis) in pixels.}
+    \label{fig:2D-Z Train}
+\end{figure}
+
+\newpage
+The following table report the mean 2D error and its variance for each trajectory in the train dataset. It's important to notice that the error grows along with the RPY rotations in the respective trajectories (see the trajectories specifics at \textbf{\ref{tab:trajectories}}).
+
+\begin{table}[H]
+\label{tab:2DErrorResultsTrain}
+\centering
+\begin{tabular}{l | l }
+\toprule
+Trajectory & $E_{CNN}$ [pixels]\\
+\midrule
+TRAY\_1 & 1.37 $\pm$ 0.05 \\
+TRAY\_2 & 1.39 $\pm$ 0.05 \\
+TRAY\_3 & 1.35 $\pm$ 0.06 \\
+TRAY\_4 & 1.34 $\pm$ 0.06 \\
+TRAY\_5 & 1.37 $\pm$ 0.07 \\
+TRAY\_6 & 1.38 $\pm$ 0.07 \\
+TRAY\_7 & 1.37 $\pm$ 0.06 \\
+TRAY\_8 & 1.43 $\pm$ 0.06 \\
+TRAY\_9 & 1.33 $\pm$ 0.06 \\
+TRAY\_10 & 1.34 $\pm$ 0.06 \\
+TRAY\_11 & 1.42 $\pm$ 0.07 \\
+TRAY\_12 & 1.41 $\pm$ 0.05 \\
+TRAY\_13 & 1.38 $\pm$ 0.05 \\
+TRAY\_14 & 1.38 $\pm$ 0.05 \\
+TRAY\_15 & 1.38 $\pm$ 0.05 \\
+TRAY\_16 & 1.37 $\pm$ 0.05 \\
+\midrule
+Overall & 1.38 $\pm$ 0.06\\
+\bottomrule
+\end{tabular}
+\caption{Landmark Regression module results.}
+\end{table}
+
+\subsubsection{Landmark Mapping}
+
+The evaluation of the performances of \textit{Landmark Mapping} module is performed on both multi-models configuration and single model configuration.
+
+In the first case, each model is trained to cover a specific range of distances from the target. This strategic division aimed to capitalize on the unique strengths of each model within its designated proximity band. The switch between one model to the following one is performed as the predicted distance from the target overcome a threshold for five times.
+
+The following table shows the used thresholds for the models switching:
+
+\begin{table}[H]
+\label{tab:Landmark Mapping Thresholds}
+\centering
+\begin{tabular}{l|l}
+\toprule
+Models transition & Threshold (m)\\
+\midrule
+M1 $\rightarrow$ M2 & 1.30\\
+M2 $\rightarrow$ M3 & 0.60 \\
+\bottomrule
+\end{tabular}
+\caption{Thresholds of the multi-model configuration.}
+\end{table}
+The Landmark Mapping module takes the predicted 2D positions of landmarks as input, and as a result, its output is influenced by any residual errors propagated from the preceding module. Notably, the errors in predicting the 3D positions tend to be more pronounced for target locations that are farther from the camera. This happens because a pixel error in the 2D positions at greater distances corresponds to a relatively larger 3D error compared to positions that are closer to the camera.
+
+
+\newpage
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.75]{Figures/Chapter5/Z_model_distribution_train.png}
+    \caption[Models Distribution]{Models Distribution over the\textit{z} axis}
+    \label{fig:Models Distribution}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.75]{Figures/Chapter5/3D_train_models.png}
+    \caption[Landmark Mapping error train models]{Landmark Mapping error for the different models of the multi-model configuration.}
+    \label{fig:3D train models}
+\end{figure}
+\newpage
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.75]{Figures/Chapter5/3D_train_multi.png}
+    \caption[Landmark Mapping error multi-model configuration.]{3D error over the training dataset in the multi-model configuration.}
+    \label{fig:3D train multi}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.75]{Figures/Chapter5/3D_train_single.png}
+    \caption[Landmark Mapping error single-model configuration.]{3D error over the training dataset in the single-model configuration.}
+    \label{fig:3D train single}
+\end{figure}
+\newpage
+As it's evident in figures \textbf{\ref{fig:3D-Z train multi}} and \textbf{\ref{fig:3D-Z train single}}, the single-model configuration is more consistent than the multi-model one. This is due to the fact that the training phase is performed with a wider dataset than the other configuration, but of diversified data.\\
+The multi-model configuration presents drastic jumps in the transition from one model to another, giving to the switching model algorithm too weight in 3D position evaluation.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{Figures/Chapter5/3D-Z_train_multi.png}
+    \caption[Landmark Mapping error over the trajectory range in multi-model configuration.]{Landmark Mapping error over the trajectory range (\textit{z} axis) in the multi-model configuration.}
+    \label{fig:3D-Z train multi}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{Figures/Chapter5/3D-Z_train_single.png}
+    \caption[Landmark Mapping error over the trajectory range in single-model configuration.]{Landmark Mapping error over the trajectory range (\textit{z} axis) in the single-model configuration.}
+    \label{fig:3D-Z train single}
+\end{figure}
+\newpage
+Overall the single model configuration presents better performances in the 3D landmarks position prediction. The main problem of the multi-model configuration is the amount of data used to train the three models. With a wider training dataset and a more accurate decision algorithm in the transition from a model to another, this configuration could introduce more robustness in the landmarks position prediction.
+
+In the following table are compared the performances of the two analyzed configuration for each training trajectory.
+\begin{table}[H]
+\label{tab:3DErrorResultTrain}
+\centering
+\begin{tabular}{l | l l }
+\toprule
+Trajectory & $E_{NN}$ multi-model & $E_{NN}$ single model\\
+\midrule
+TRAY\_1 & (1.02 $\pm$ 0.22) cm & (0.76 $\pm$ 0.22) cm\\
+TRAY\_2 & (1.06 $\pm$ 0.22) cm & (0.74 $\pm$ 0.22) cm \\
+TRAY\_3 & (1.02 $\pm$ 0.23) cm & (0.73 $\pm$ 0.23) cm \\
+TRAY\_4 & (1.05 $\pm$ 0.23) cm & (0.69 $\pm$ 0.23) cm \\
+TRAY\_5 & (1.16 $\pm$ 0.24) cm & (0.74 $\pm$ 0.24) cm \\
+TRAY\_6 & (1.30 $\pm$ 0.32) cm & (0.90 $\pm$ 0.30) cm \\
+TRAY\_7 & (0.87 $\pm$ 0.18) cm & (0.72 $\pm$ 0.18) cm \\
+TRAY\_8 & (0.82 $\pm$ 0.13) cm & (0.72 $\pm$ 0.13) cm \\
+TRAY\_9 & (0.86 $\pm$ 0.19) cm & (0.76 $\pm$ 0.19) cm \\
+TRAY\_10 & (0.91 $\pm$ 0.15) cm & (0.84 $\pm$ 0.15) cm \\
+TRAY\_11 & (1.03 $\pm$ 0.07) cm & (0.95 $\pm$ 0.07) cm \\
+TRAY\_12 & (0.94 $\pm$ 0.16) cm & (0.66 $\pm$ 0.17) cm \\
+TRAY\_13 & (1.03 $\pm$ 0.17) cm & (0.70 $\pm$ 0.17) cm \\
+TRAY\_14 & (1.31 $\pm$ 0.27) cm & (0.92 $\pm$ 0.27) cm \\
+TRAY\_15 & (1.59 $\pm$ 0.28) cm & (1.20 $\pm$ 0.28) cm \\
+TRAY\_16 & (1.90 $\pm$ 0.42) cm & (1.52 $\pm$ 0.42) cm \\
+\midrule
+Overall & (1.12 $\pm$ 0.48) cm & (0.85 $\pm$ 0.35) cm \\
+\bottomrule
+\end{tabular}
+\caption{Landmark Mapping module results with single and multi-model configurations.}
+\end{table}
+
+\newpage
+\subsubsection{Final Pose Evaluation}
+
+The \textit{CPD} module introduces an ulterior error due to the alignment of the reference points set with the predicted one.
+
+It's important to notice that the two errors $E_R$ and $E_T$ are deeply affected by the number of points in the predicted point set.
+
+In cases of a sparse point set, CPD struggles to discern a coherent structure, leading to decreased accuracy in the alignment process. The algorithm's ability to effectively capture the global patterns and deformations decreases, resulting in sub-optimal alignments. Therefore, maintaining an adequate number of points in the input sets is crucial for CPD to deliver robust and reliable performance, ensuring the successful alignment of point clouds in various applications.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.60]{Figures/Chapter5/Et-Z_train_multi.png}
+    \caption[Translation error in multi-model configuration.]{Translation error over the trajectory range (\textit{z} axis) in multi-model configuration.}
+    \label{fig:Et-Z train multi}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.60]{Figures/Chapter5/Et-Z_train_single.png}
+    \caption[Translation error in single-model configuration.]{Translation error over the trajectory range (\textit{z} axis) in single-model configuration.}
+    \label{fig:Et-Z train single}
+\end{figure}
+
+\newpage
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.75]{Figures/Chapter5/Er-Z_train_multi.png}
+    \caption[Rotation error in single-model configuration.]{Rotation error over the trajectory range (\textit{z} axis) in multi-model configuration.}
+    \label{fig:Er-Z train multi}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.75]{Figures/Chapter5/Er-Z_train_single.png}
+    \caption[Rotation error in single-model configuration.]{Rotation error over the trajectory range (\textit{z} axis) in single-model configuration.}
+    \label{fig:Er-Z train single}
+\end{figure}
+
+\newpage
+As shown in figures \textbf{\ref{fig:Et-Z train multi}} and \textbf{\ref{fig:Et-Z train single}}, the algorithm performances vary drastically as the number of predicted landmarks becomes six or less.\\
+\begin{table}[H]
+\centering
+\begin{tabular}{l | l l l l | l l | l}
+\toprule
+Trajectory & $E_{CNN}$ (pxls) & $E_{NN}$ (cm) & $E_T$ (cm)& $E_R$ (°)& $S_T$ & $S_R$ & $S$\\
+\midrule
+TRAY\_1 & 1.37 $\pm$ 0.05 & 1.02 $\pm$ 0.22 & 2.41 $\pm$ 2.09 & 0 & 0.0228 & 0 & 0.0228\\
+\midrule
+TRAY\_2 & 1.39 $\pm$ 0.05 & 1.06 $\pm$ 0.22 & 2.17 $\pm$ 1.67 & 0.010 & 0.0200 & 0.0001 & 0.0201\\
+TRAY\_3 & 1.35 $\pm$ 0.06 & 1.02 $\pm$ 0.23 & 1.92 $\pm$ 0.98 & 0.030 & 0.0180 & 0.0005 & 0.0185\\
+TRAY\_4 & 1.34 $\pm$ 0.06 & 1.05 $\pm$ 0.23 & 1.89 $\pm$ 0.67 & 0.058 & 0.0170 & 0.0010 & 0.0180\\
+TRAY\_5 & 1.37 $\pm$ 0.07 & 1.16 $\pm$ 0.24 & 2.08 $\pm$ 0.86 & 0.095 & 0.0196 & 0.0016 & 0.0212\\
+TRAY\_6 & 1.38 $\pm$ 0.07 & 1.30 $\pm$ 0.32 & 2.50 $\pm$ 4.91 & 0.137 & 0.0245 & 0.0024 & 0.0269\\
+\midrule
+TRAY\_7 & 1.37 $\pm$ 0.06 & 0.87 $\pm$ 0.18 & 1.96 $\pm$ 1.50 & 0.006 & 0.0185 & 0.0001 & 0.0186\\
+TRAY\_8 & 1.43 $\pm$ 0.06 & 0.82 $\pm$ 0.13 & 1.65 $\pm$ 1.33 & 0.022 & 0.0160 & 0.0004 & 0.0164\\
+TRAY\_9 & 1.33 $\pm$ 0.06 & 0.86 $\pm$ 0.19 & 1.64 $\pm$ 1.48 & 0.048 & 0.0158 & 0.0008 & 0.0166\\
+TRAY\_10 & 1.34 $\pm$ 0.06 & 0.91 $\pm$ 0.15 & 1.71 $\pm$ 1.94 & 0.083 & 0.0167 & 0.0014 & 0.0181\\
+TRAY\_11 & 1.42 $\pm$ 0.07 & 1.03 $\pm$ 0.07 & 1.91 $\pm$ 3.00 & 0.127 & 0.0190 & 0.0022 & 0.0212\\
+\midrule
+TRAY\_12 & 1.41 $\pm$ 0.05 & 0.94 $\pm$ 0.16 & 1.67 $\pm$ 1.88 & 0.006 & 0.0158 & 0.0001 & 0.0159\\
+TRAY\_13 & 1.38 $\pm$ 0.05 & 1.03 $\pm$ 0.17 & 1.55 $\pm$ 1.60 & 0.014 & 0.0138 & 0.0002 & 0.0140\\
+TRAY\_14 & 1.38 $\pm$ 0.05 & 1.31 $\pm$ 0.27 & 2.30 $\pm$ 1.06 & 0.023 & 0.0195 & 0.0004 & 0.0199\\
+TRAY\_15 & 1.38 $\pm$ 0.05 & 1.59 $\pm$ 0.28 & 3.21 $\pm$ 0.70 & 0.032 & 0.0271 & 0.0005 & 0.0276\\
+TRAY\_16 & 1.37 $\pm$ 0.05 & 1.90 $\pm$ 0.42 & 4.23 $\pm$ 0.60 & 0.042 & 0.0357 & 0.0007 & 0.0364\\
+\midrule
+Overall & 1.38 $\pm$ 0.06 & 1.12 $\pm$ 0.48 & 2.18 $\pm$ 2.09 & 0.046 & 0.0200 & 0.0008 & \textbf{0.0208}\\
+\bottomrule
+\end{tabular}
+\caption{Results on training set with multi-model configuration.}
+\label{tab:ResMultiTrain}
+\end{table}
+\begin{table}[H]
+\centering
+\begin{tabular}{l | l l l l | l l | l}
+\toprule
+Trajectory & $E_{CNN}$ (pxls) & $E_{NN}$ (cm) & $E_T$ (cm)& $E_R$ (°)& $S_T$ & $S_R$ & $S$\\
+\midrule
+TRAY\_1 & 1.37 $\pm$ 0.05 & 0.76 $\pm$ 0.22 & 2.14 $\pm$ 2.09 & 0 & 0.0196 & 0 & 0.0196\\
+\midrule
+TRAY\_2 & 1.39 $\pm$ 0.05 & 0.74 $\pm$ 0.22 & 1.89 $\pm$ 1.67 & 0.010 & 0.0168 & 0.0001 & 0.0169\\
+TRAY\_3 & 1.35 $\pm$ 0.06 & 0.73 $\pm$ 0.23 & 1.72 $\pm$ 0.98 & 0.032 & 0.0152 & 0.0005 & 0.0157\\
+TRAY\_4 & 1.34 $\pm$ 0.06 & 0.69 $\pm$ 0.23 & 1.66 $\pm$ 0.67 & 0.065 & 0.0152 & 0.0011 & 0.0163\\
+TRAY\_5 & 1.37 $\pm$ 0.07 & 0.74 $\pm$ 0.24 & 1.72 $\pm$ 0.86 & 0.110 & 0.0164 & 0.0019 & 0.0183\\
+TRAY\_6 & 1.38 $\pm$ 0.07 & 0.90 $\pm$ 0.30 & 1.98 $\pm$ 4.91 & 0.166 & 0.0197 & 0.0029 & 0.0226\\
+\midrule
+TRAY\_7 & 1.37 $\pm$ 0.06 & 0.72 $\pm$ 0.18 & 1.93 $\pm$ 1.50 & 0.007 & 0.0174 & 0.0001 & 0.0175\\
+TRAY\_8 & 1.43 $\pm$ 0.06 & 0.72 $\pm$ 0.13 & 1.79 $\pm$ 1.33 & 0.028 & 0.0159 & 0.0005 & 0.0164\\
+TRAY\_9 & 1.33 $\pm$ 0.06 & 0.76 $\pm$ 0.19 & 1.64 $\pm$ 1.48 & 0.062 & 0.0145 & 0.0011 & 0.0155\\
+TRAY\_10 & 1.34 $\pm$ 0.06 & 0.84 $\pm$ 0.15 & 1.55 $\pm$ 1.94 & 0.109 & 0.0131 & 0.0019 & 0.0150\\
+TRAY\_11 & 1.42 $\pm$ 0.07 & 0.95 $\pm$ 0.07 & 1.54 $\pm$ 3.00 & 0.168 & 0.0126 & 0.0029 & 0.0155\\
+\midrule
+TRAY\_12 & 1.41 $\pm$ 0.05 & 0.66 $\pm$ 0.17 & 1.17 $\pm$ 1.88 & 0.011 & 0.0112 & 0.0002 & 0.0114\\
+TRAY\_13 & 1.38 $\pm$ 0.05 & 0.70 $\pm$ 0.17 & 0.85 $\pm$ 1.60 & 0.023 & 0.0083 & 0.0004 & 0.0087\\
+TRAY\_14 & 1.38 $\pm$ 0.05 & 0.92 $\pm$ 0.27 & 1.65 $\pm$ 1.06 & 0.036 & 0.0152 & 0.0006 & 0.0158\\
+TRAY\_15 & 1.38 $\pm$ 0.05 & 1.20 $\pm$ 0.28 & 2.67 $\pm$ 0.70 & 0.049 & 0.0240 & 0.0009 & 0.0249\\
+TRAY\_16 & 1.37 $\pm$ 0.05 & 1.52 $\pm$ 0.42 & 3.75 $\pm$ 0.60 & 0.064 & 0.0335 & 0.0011 & 0.0346\\
+\midrule
+Overall & 1.38 $\pm$ 0.06 & 0.85 $\pm$ 0.35 & 1.85 $\pm$ 1.19 & 0.058 & 0.0168 & 0.0010 & \textbf{0.0178}\\
+\bottomrule
+\end{tabular}
+\caption{Results on training set with single-model configuration.}
+\label{tab:ResSingTrain}
+\end{table}
+
+\newpage
+Tables \textbf{\ref{tab:ResMultiTrain}} and \textbf{\ref{tab:ResSingTrain}} highlight that the single-model configuration demonstrates superior overall performance ($S$ = 0.0178) compared to the multi-model configuration ($S$ = 0.0208). However, it's noteworthy that the multi-model configuration has slightly better performance in the rotation aspect despite the overall advantage of the single-model setup.
+
+\subsection{Evaluation on Test Datasets}
+\label{Chapter5/EvalTest}
+The second experiment is carried out on a separate test dataset composed of four new and unseen trajectories. This test dataset is intentionally kept independent from the training data, simulating real-world scenarios and ensuring the model's generalization capabilities. The performance on the test dataset provides insights into the method's ability to extrapolate learned patterns and accurately handle novel data instances. Together, these two experiments facilitate a comprehensive assessment of the method's robustness, effectiveness, and generalization across different datasets.
+
+The first two trajectories ($A$ and $B$) present an image quality and light conditions similar to the training images, while the other two ($Less\_Difficult\_Trajectory$ and $Difficult\_Trajectory$) present light condition too far from the training images and so the system struggles to predict the correct position of each landmarks in the image due to the fact that the \textit{Landmark Mapping} module is quite sensitive to the output of the \textit{Landmark Regression} one. Indeed, if the landmarks that are supposed to be present in the image frame are not all recognised, the 3D landmark position is predicted with high error.\\
+So the system highly relies on the correct identification of each landmark in the image by the \textit{Landmark Regression} (a deepened analysis of the problem and possible improvements is discussed at section \textbf{\ref{Chapter6/Improv}}). 
+
+Due to this, with the ladder dataset the evaluation is performed only on the \textit{Landmark Mapping} and \textit{CPD} modules, assuming exact the prediction of the landmarks position in the image (\textit{2D Error = 0}).
+\newpage
+As shown is figures \textbf{\ref{fig:2D test}} and \textbf{\ref{fig:2D-Z test}} the 2D landmarks location is predicted with a good accuracy also on the test set, with an average 2D error $E_{CNN} = 1.35 \pm 0.04$ pixels (corresponding to the 0.0026\% for 512x512 images) and a error variation on the $z$ axis coherent with the training results. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.75]{Figures/Chapter5/2D_test.png}
+    \caption[2D error over the test dataset.]{2D error over the test dataset.}
+    \label{fig:2D test}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.75]{Figures/Chapter5/2D-Z_test.png}
+    \caption[Landmark Regression error on test dataset]{Landmark Regression error over the trajectory range (\textit{z} axis) on the test dataset.}
+    \label{fig:2D-Z test}
+\end{figure}
+
+\newpage
+In contrast with the training results, the multi-model configuration of the \textit{Landmark Mapping} module express better performances on the test set than the single-model configuration on each test trajectory.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.75]{Figures/Chapter5/3D_test_multi.png}
+    \caption[Landmark Mapping error in multi-model configuration on test dataset.]{Landmark Mapping error in multi-model configuration on test dataset.}
+    \label{fig:3D test multi}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.75]{Figures/Chapter5/3D_test_single.png}
+    \caption[Landmark Mapping error in single-model configuration on test dataset.]{Landmark Mapping error in single-model configuration on test dataset.}
+    \label{fig:3D test single}
+\end{figure}
+\newpage
+In both configurations the \textit{Difficult Trajectory} is predicted with noticeable error in particular in its first part where its RPY rotations are considerable, even beyond the range of rotations known by the models (see figure \textbf{\ref{fig:3D-Z test multi}} and \textbf{\ref{fig:3D-Z test single}}).
+
+The EROSS project \cite{eross} sets a stringent guideline, aiming to a less than 2-5 centimeters 3D error, reflecting the project's emphasis on precision in spaceborne applications. The achieved 3D error, measured in the experiments, consistently falls within the specified range, showcasing the system's capability to deliver accurate and reliable results, crucial for the success of rendezvous maneuvers and other space missions.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.65]{Figures/Chapter5/3D-Z_test_multi.png}
+    \caption[Landmark Mapping error over the trajectory range in the multi-model configuration on test dataset.]{Landmark Mapping error over the trajectory range (\textit{z} axis) in the multi-model configuration on test dataset.}
+    \label{fig:3D-Z test multi}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.65]{Figures/Chapter5/3D-Z_test_single.png}
+    \caption[Landmark Mapping error over the trajectory range in the single-model configuration on test dataset.]{Landmark Mapping error over the trajectory range (\textit{z} axis) in the single-model configuration on test dataset.}
+    \label{fig:3D-Z test single}
+\end{figure}
+\newpage
+
+As previously discussed, the final translation and rotation errors $E_T$ and $E_R$ are affected by the number of landmarks in the predicted point set. In figures \ref{fig:Et test multi} and \ref{fig:Et test single}, in positions closed to the target, it's possible to see that the translation error increases as far as the number of visible landmarks in the image frame decreases.\\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.75]{Figures/Chapter5/Et-Z_test_multi.png}
+    \caption[Translation error over the trajectory range in multi-model configuration on test dataset.]{Translation error over the trajectory range (\textit{z} axis) in multi-model configuration on test dataset.}
+    \label{fig:Et test multi}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.75]{Figures/Chapter5/Et-Z_test_single.png}
+    \caption[Translation error over the trajectory range in single-model configuration on test dataset.]{Translation error over the trajectory range (\textit{z} axis) in single-model configuration on test dataset.}
+    \label{fig:Et test single}
+\end{figure}
+
+\newpage
+The multi-model configuration exhibits noticeable performance jumps during the transitions between models. These abrupt shifts highlight the challenge associated with integrating different models, suggesting the need for further refinement in the transition logic to ensure smoother and more consistent predictions across varying proximity bands.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.75]{Figures/Chapter5/Er-Z_test_multi.png}
+    \caption[Rotation error over the trajectory range in multi-model configuration on test dataset.]{Rotation error over the trajectory range (\textit{z} axis) in multi-model configuration on test dataset.}
+    \label{fig:Er test models}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.75]{Figures/Chapter5/Er-Z_test_single.png}
+    \caption[Rotation error over the trajectory range in single-model configuration on test dataset.]{Rotation error over the trajectory range (\textit{z} axis) in single-model configuration on test dataset.}
+    \label{fig:Er test single}
+\end{figure}
+
+\newpage
+In the following tables are reported the analysed errors and scores for each test trajectory and in both analyzed configurations: multi-model and- single-model.
+
+In contrast to the training results, the single-model configuration has lower performance both on translation and rotation, meaning that compared to the multi-model one demonstrates an overfitting behavior.
+
+Overall, considering the multi-model configuration, the testing performance, both on rotation ($S_R$) and  translation ($S_T$), is not so far from the training one and quite encouraging, demonstrating the ability of this configuration to generalize when dealing with unknown data.
+
+\begin{table}[H]
+\label{tab:multi-model test results}
+\centering
+\begin{tabular}{l | l l l l | l l | l}
+\toprule
+Trajectory & $E_{CNN}$ (pxls) & $E_{NN}$ (cm) & $E_T$ (cm)& $E_R$ (°)& $S_T$ & $S_R$ & $S$\\
+\midrule
+TRAY\_A & 1.34 $\pm$ 0.05 & 1.08 $\pm$ 0.29 & 2.96 & 0.601 & 0.0238 & 0.0105 & 0.0343\\
+TRAY\_B & 1.37 $\pm$ 0.05 & 1.89 $\pm$ 1.60 & 3.62 & 0.281 & 0.0287 & 0.0049 & 0.0336\\
+Less\_D\_Tray & 0.00 $\pm$ 0.00 & 1.27 $\pm$ 0.15 & 3.32 & 0.057 & 0.0337 & 0.0010 & 0.0347\\
+Difficult\_Tray & 0.00 $\pm$ 0.00 & 5.58 $\pm$ 17.96 & 7.73 & 0.375 & 0.0697 & 0.0066 & 0.0763\\
+\midrule
+Overall & 1.35 $\pm$ 0.04 & 2.46 $\pm$ 8.38 & 4.41 & 0.328 & 0.0390 & 0.0057 & \textbf{0.0447}\\
+\bottomrule
+\end{tabular}
+\caption{Results on test set with multi-model configuration.}
+\end{table}
+
+\begin{table}[H]
+\label{tab:single-model test results}
+\centering
+\begin{tabular}{l | l l l l | l l | l}
+\toprule
+Trajectory & $E_{CNN}$ (pxls) & $E_{NN}$ (cm) & $E_T$ (cm)& $E_R$ (°)& $S_T$ & $S_R$ & $S$\\
+\midrule
+TRAY\_A & 1.34 $\pm$ 0.05 & 0.95 $\pm$ 0.29 & 2.04 & 0.781 & 0.0165 & 0.0136 & 0.0301\\
+TRAY\_B & 1.37 $\pm$ 0.05 & 1.21 $\pm$ 1.60 & 3.06 & 0.544 & 0.0246 & 0.0095 & 0.0341\\
+Less\_D\_Tray & 0.00 $\pm$ 0.00 & 11.76 $\pm$ 0.15 & 17.19 & 0.045 & 0.1166 & 0.0008 & 0.1174\\
+Difficult\_Tray & 0.00 $\pm$ 0.00 & 20.69 $\pm$ 17.96 & 29.36 & 0.373 & 0.2010 & 0.0065 & 0.2075\\
+\midrule
+Overall & 1.35 $\pm$ 0.04 & 8.67 $\pm$ 180.0 & 12.9 & 0.435 & 0.0897 & 0.0076 & \textbf{0.0973}\\
+\bottomrule
+\end{tabular}
+\caption{Results on test set with single-model configuration.}
+\end{table}

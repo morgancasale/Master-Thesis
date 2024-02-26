@@ -1,0 +1,243 @@
+% Chapter Template
+
+\chapter{Algorithms and methods} % Main chapter title
+
+\label{Chapter4} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+
+%----------------------------------------------------------------------------------------
+%	SECTION 1
+%----------------------------------------------------------------------------------------
+
+\section{Offline Architecture}
+Figure \textbf{\ref{fig:Offline Pipeline}} describes the overall offline pipeline of the implemented methodology, which consists of several main modules.\\
+From the satellite CAD model nine landmarks have been manually selected (details about the selection criteria explained in section \textbf{\ref{Chapter4/LandmarksSel}}). The 2D-3D correspondence of each landmark is used for training the \textit{Landmark regression} module to predict the nine landmarks image position and the \textit{Landmark Mapping} module to reconstruct the 3D position of each landmark from their image position.
+The implemented code can be accessed in \cite{JMF}.
+
+\begin{figure}[th]
+    \centering
+    \includegraphics[scale=0.55]{Figures/Chapter4/Offline Pipeline.png}
+    \caption[Offline pipeline]{Offline pipeline of the implemented pose estimator.}
+    \label{fig:Offline Pipeline}
+\end{figure}
+%-----------------------------------
+%	SUBSECTION 1
+%-----------------------------------
+\subsection{2D-3D Correspondence}
+\label{Chapter4/2D-3D}
+The computation of the 3D position of landmarks in the training images involves a transformation process that leverages the relative positions of the selected landmarks with respect to the satellite's reference system, as well as the position and orientation of the camera.
+
+\begin{figure}[th]
+    \centering
+    \includegraphics[scale=1]{Figures/Chapter4/Satellite_CAD_Model.png}
+    \caption[CAD Model]{Selected Landmarks on the CAD Model.}
+    \label{fig:CAD Model}
+\end{figure}
+
+The 3D landmarks are defined in the context of the satellite's reference system. These landmarks represent specific features on the satellite's structure. Their 3D coordinates are known relative to the satellite's own coordinate system thanks to the CAD model.
+
+The camera that captures the training images is mounted on the wrist of a robotic arm on the servicer satellite and its position and orientation with respect to the satellite's reference system is paired with images in the training dataset.
+
+To determine the 3D position of the landmarks in the camera's coordinate system, a simple operation is performed, transforming the landmarks' positions from the satellite's frame to the camera's frame by means of the systems' transformation matrix.
+\begin{equation}
+    x_{cam,i} = 
+\begin{bmatrix}
+    \textbf{R}^\textbf{T} & t_{c,s}\\
+    0 & 1
+\end{bmatrix}
+x_{sat,i} \quad i = 1,...,N \quad N:\textrm{number of landmarks}
+\end{equation}
+Furthermore, perspective projection transformation (described in section \textbf{\ref{Chapter2/PerspProj}}) is performed, relating 3D world coordinates \{\(x_{i}\)\} to 2D image coordinates \{\(z_{i}\)\} by means of the perspective matrix \{\(\textbf{P}\)\}.
+\begin{equation}
+    z_{i} = \textbf{P}*x_{cam,i} \quad i = 1,...,N
+\end{equation}
+
+%-----------------------------------
+%	SUBSECTION 2
+%-----------------------------------
+\newpage
+\subsection{Landmark Regression}
+\label{Chapter4/LandReg}
+Each training image is first pre-processed (description of the pre-processing process in section \textbf{\ref{Chapter4/Pre-Processing}}) and then coupled with a set of ground truth 2D landmarks \{\(\textbf{z}_{i}\)\}, as described in section \textbf{\ref{Chapter4/2D-3D}}. Those labels are used to supervise the training of the regression model to predict the 2D position of landmarks in the testing images. An additional label is introduced to handle images that capture only partially the satellite, the visibility coefficient \{\(v_{i}\)\}.
+\begin{equation}
+  v_{i}=\begin{cases}
+    1, & \text{if $\textbf{z}_{i}$ is inside image frame}.\\
+    0, & \text{otherwise}.
+  \end{cases}
+\end{equation}
+The output of the model is a tensor of 9 heatmaps, one for each landmark $h(\textbf{z}_{i}^p)$. The ground truth heatmaps $h(\textbf{z}_{i})$ are generated as 2D normal distributions with mean equal to the ground truth location of each landmark, and standard deviation of 1-pixel (code in appendix \textbf{\ref{AppendixA1}}).
+
+The model is trained from scratch by minimizing the following customized loss:
+\begin{equation}
+l = \frac{1}{N}\sum_{i=1}^N v_i(h(\textbf{z}_{i}^p) - h(\textbf{z}_{i}))^2
+\end{equation}
+The loss function \textit{l} is defined on a single image and in a mini batch \textit{l} is simply averaged. The model is trained in 100 epochs with the \textit{Adam optimizer}\cite{kingma2017adam}.
+
+In order to select the landmark location in the predicted heatmap, an additional selection algorithm is introduced.\\
+Each predicted heatmap is normalized over [-1,+1] range, where \(-1\) represents a totally black pixel and +1 totally white. After an accurate study on the heatmaps that presents an accurately predicted landmark, the main result is that most of those images presented maximum value \(>-0.5\), so a first threshold \(t_1\) is introduced and set to that value. In only few cases the prediction of the landmark is more imprecise, due, for instance, to similarities with other features in the image. For those cases a second lower threshold is included \(t_2 = -0.6\).
+
+Firstly pixels in the images with value lower than \(t_2\) are by default set to black \((-1)\) to clear the image from impurities, then, for those heatmaps with maximum value over \(t_1\), the position of their maximum value is taken as landmark position. On the other hand, for those who present a maximum value within the thresholds \(t_1\) and \(t_2\) an additional check on the heatmap variance is performed: only for those with a variance value over \(2e^{-6}\) the landmark is considered within the image and its location is registered as above. For all the other heatmaps that do not follow these conditions, the landmark is considered out of the image frame (2D location set to default value [-1,-1]) and the visibility coefficient \(v_{i}\) is set to zero.
+
+In case of visually similar landmarks, an additional check is introduced. The position of a landmark registered after recognition is compared with the previously registered landmarks. In case it has a position within a certain pixel range near to another landmark, the one with higher maximum value and variance is registered and the other is considered out of frame (code in appendix \textbf{\ref{AppendixA2}}). Figure \textbf{\ref{fig:Landmark Identification Algorithm}} shows the algorithm's identification process.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{Figures/Chapter4/Landmark Selection.png}
+    \caption[Landmark Identification Algorithm.]{Landmark Identification Algorithm.}
+    \label{fig:Landmark Identification Algorithm}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{Figures/Chapter4/Landmark.png}
+    \caption[Landmarks identified by the Landmark Regression module.]{Landmarks identified by the Landmark Regression module.}
+    \label{fig:Identified landmarks}
+\end{figure}
+
+
+
+\newpage
+%-----------------------------------
+%	SUBSECTION 3
+%-----------------------------------
+\subsection{Landmark Mapping}
+The Landmark Mapping is a neural network designed to estimate the 3D positions of landmarks using their 2D positions, mapping the 2D-3D relation.\\
+The network takes as input the 2D positions of landmarks obtained from the Landmark Regression module (\textbf{\ref{Chapter4/LandReg}}) and predicts as output the respective 3D position.
+
+The network has two hidden layers:
+\begin{itemize}
+    \item The first hidden layer consists of 128 units. It processes the input data and learns complex patterns and relationships between the 2D and 3D coordinates.
+    \item The second hidden layer has 64 units and further refines the features learned in the previous layer.
+\end{itemize}
+ReLU activation functions are applied after the first and second hidden layers. ReLU introduces non-linearity and helps the network capture complex relationships in the data.\\
+The output layer is responsible for regressing the 3D positions of the landmarks. Each landmark is represented by a 3D coordinate (x, y, z). The output layer produces these 3D coordinates for all the landmarks.\\
+The output of the network is reshaped to organize the predicted 3D coordinates for each landmark. This reshaping ensures that the output is in a format suitable for further processing.\\
+The model is trained with the 2D-3D correspondences described in section \textbf{\ref{Chapter4/2D-3D}}, but, before training, the 3D ground truth of landmarks out of image frame (\(v_i = 0\)) is set to default value \([0,0,0]\).\\
+The model is trained from scratch by minimizing the following loss:
+\begin{equation}
+l = \frac{1}{N}\sum_{i=1}^N v_i(\textbf{x}_{i}^p - \textbf{x}_{i})^2
+\end{equation}
+In the above equation the \(\textbf{x}_{i}^p\) represents the 3D position of the \textit{i}-th landmark predicted by the model, while \(\textbf{x}_{i}\) is its ground truth position.\\
+As in the previous model, the loss function \textit{l} is defined on a single group of landmarks and in a mini batch it is simply averaged. The model is trained in a maximum of 150 batches with a \textit{Adam optimizer}\cite{kingma2017adam}.
+
+In order to improve the accuracy of the algorithm, three models are created, each of them specialized in a specific range of distance from the target. The training dataset is so split in three subdatasets depending on the distance on the z axis from the satellite with a 100 images superposition per model from each trajectory. The table below shows the specifications of each model.
+\begin{table}[H]
+\label{tab:Landmark Mapping Models}
+\centering
+\begin{tabular}{l|l}
+\toprule
+Model Name & Covered Range (m)\\
+\midrule
+M1 & 2.00-1.20 \\
+M2 & 1.40-0.50 \\
+M3 & 0.70-0.40 \\
+\bottomrule
+\end{tabular}
+\caption{Specifics of three models \textit{M1}, \textit{M2} and \textit{M3}.}
+\end{table}
+In order to prevent overfitting, an \textit{Early Stopping} algorithm \cite{T81-558} has been introduced. Overfitting occurs when a neural network becomes too specialized in its understanding of the training data, to the point that it struggles to generalize to new, unseen data. The idea behind early stopping is to maintain under control the network's performance, particularly on a separate dataset called validation set, as it undergoes training.
+During the training process, the neural network works on refining its parameters using the training dataset. But instead of letting it train tirelessly until convergence, the training process is periodically paused and its performance are evaluated on the validation set. If, over a certain number of consecutive evaluations (determined by a parameter known as "patience"), the network's performance starts to worsen, it's an early warning sign. It suggest that the model is becoming too specialized. Once the point where the validation performance is consistently declining, the training phase is stopped. At this moment, the neural network is considered to have reached its optimal performance on unseen data. Its parameters are taken as the final model, capable to generalize to new unseen data.
+%----------------------------------------------------------------------------------------
+%	SECTION 2
+%----------------------------------------------------------------------------------------
+\section{Online Architecture}
+The online architecture operates in real-time. It processes the input data from the camera and produces as output the satellite pose estimation.
+
+After being pre-processed, the image captured from the camera is passed to the \textit{Landmark regression} module. The latter predicts the 2D location \{\(\textbf{z}_i\)\} of the 9 landmarks along with the visibility coefficient \{\(v_i\)\} for each of them. The \textit{Landmark Mapping} module then uses these data to compute the 3D position of each landmark with respect to the camera frame. The final 6DOF pose of the satellite is then computed from the CPD module. Figure \textbf{\ref{fig:Online Pipeline}} shows the online pipeline of the implemented methodology.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{Figures/Chapter4/Online Pipeline.png}
+    \caption[Online pipeline of the implemented pose estimator.]{Online pipeline of the implemented pose estimator.}
+    \label{fig:Online Pipeline}
+\end{figure}
+
+
+\subsection{Pre-Processing}
+\label{Chapter4/Pre-Processing}
+The image captured from the camera is pre-processed in the \textit{Pre-Processing} module. It consists in a bilateral filter, which is a non-linear, edge-preserving smoothing filter that reduces noise while preserving the edges in an image.\\
+The mathematical steps behind the bilateral filter involve computing weighted averages of pixel values within a local neighborhood. 
+\begin{figure}[th]
+    \centering
+    \includegraphics[scale=0.32]{Figures/Chapter4/bilateral_filtering.png}
+    \caption[Bilateral Filter.]{Bilateral Filter mathematical steps.}
+    \label{fig:Bilateral Filter}
+\end{figure}
+
+The formula for the bilateral filter operation can be described as follows:
+
+Given an input image \(I(x, y)\) and the filter parameters:
+\begin{itemize}
+    \item \(d\) (diameter of each pixel's neighborhood)
+    \item \(\sigma_c\) (standard deviation of the color space)
+    \item \(\sigma_s\) (standard deviation of the spatial space)
+\end{itemize}
+The filtered output image \(B(x, y)\) can be computed using the following equation for each pixel \((x, y)\):
+\begin{equation}
+   B(x, y) = \frac{1}{W(x, y)} \sum_{(i, j) \in S} I(i, j) \cdot G_c(I(x, y), I(i, j), \sigma_c) \cdot G_s(x, y, i, j, \sigma_s) 
+\end{equation}
+
+
+Where:
+\begin{itemize}
+    \item \(S\) is the neighborhood of pixel \((x, y)\), defined by a window of diameter \(d\).
+    \item \(G_c\) is the color similarity term, which measures the similarity in color between pixels \((x, y)\) and \((i, j)\) in the color space.
+    \item \(G_s\) is the spatial similarity term, which measures the spatial proximity between pixels \((x, y)\) and \((i, j)\).
+    \item \(W(x, y)\) is a normalization factor.
+\end{itemize}
+The \(G_c\) term is defined as a Gaussian function in the color space:
+\begin{equation}
+    G_c(I(x, y), I(i, j), \sigma_c) = \exp\left(-\frac{\|I(x, y) - I(i, j)\|^2}{2\sigma_c^2}\right)
+\end{equation}
+
+The \(G_s\) term is a Gaussian function in the spatial space:
+\begin{equation}
+    G_s(x, y, i, j, \sigma_s) = \exp\left(-\frac{\|(x, y) - (i, j)\|^2}{2\sigma_s^2}\right)
+\end{equation}
+
+\begin{figure}[th]
+    \centering
+    \includegraphics[scale=0.5]{Figures/Chapter4/Pre-processing.png}
+    \caption[Input and pre-processed image.]{On the left the original sample image from the training dataset, on the right the resultant image after the application of the bilaterial filter ($d = 40,\sigma_c = 40,\sigma_s = 200$).}
+    \label{fig:Pre-processing}
+\end{figure}
+
+The bilateral filter operates by applying these Gaussian weighting functions to compute the weighted average of pixel values within the defined neighborhood, both in color and spatial spaces, resulting in a smoothed image that preserves edges and details. The filter helps reduce noise while keeping the important structures in the image intact.
+
+\subsection{Coherent Point Drift (CPD)}
+\label{Chapter4/CPD}
+As the \textit{Landmark Mapping} module predicts the position of each landmark independently one from the other and so each landmark has its own error over the three axis, the resultant cloud of points is misaligned with respect to the rigid reference position given by the CAD model.\\
+In order to estimate the 6DOF pose of the satellite and in the meantime overcome this misalignment problem a mathematical technique is used: Coherent Point Drift.
+
+Two sets of 3D points are present: one is the "target", which represents the 3D position of the landmarks in the camera frame supposing no translation and no rotation, and the other is "source", which is the 3D position of the predicted landmarks.
+The "source" point set is only composed by landmarks identified in the image frame (\(v_i = 1\)). It is important to know that the algorithm's performances strongly depend on the number of points in the set so, with the camera approaching the target, some landmarks are cut from the image frame and consequently the pose estimation accuracy reduces.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.23]{Figures/Chapter4/CPD.png}
+    \caption[Iterations of the CPD optimization process.]{Iterations of the CPD optimization process.}
+    \label{fig:CPD}
+\end{figure}
+%----------------------------------------------------------------------------------------
+%	SECTION 3
+%----------------------------------------------------------------------------------------
+
+\section{Implementation problems and Technical choices }
+\subsection{Landmarks Selection}
+\label{Chapter4/LandmarksSel}
+The main problem in the implementation of the \textit{Landmark regression} module (\textbf{\ref{Chapter4/LandReg}}) is the selection of the landmarks.
+Selecting meaningful landmarks is a critical first step, requiring a accurate understanding of the satellite's structure. These landmarks must possess distinct characteristics that remain invariant under varying conditions, such as changes in lighting, orientation, or potential occlusions.
+
+The first performed attempt in the selection of the landmarks was composed of 11 landmarks with relevant features in the satellite's structure. Most of those visual features were similar to each others and the resultant heatmap predicted by the CNN for a single landmark was ambiguous among multiple ones. This led to a complicated recognition of the landmark location in the image with complex and heavier algorithms for the 2D position identification.
+
+In both cases the set of landmarks has been selected near the approach target to limit the number of out of frame landmark in closer positions.
+
+\subsection{Dataset availability}
+\label{Chapter4/DatasetAv}
+Another notable challenge stems from the limited size of available datasets. A smaller dataset poses a risk of overfitting, potentially hindering the model's ability to generalize across diverse scenarios. Addressing this issue requires careful consideration of data augmentation techniques, introducing various transformations to enhance the model's adaptability.
+
+The dataset used for training present five different orientations on each axis of the satellite during the whole approaching range. The main limitation given by the used dataset is the lack of combined rotations over multiple axis and a wider range of rotation on single axis.
+
+Even though the \textit{Landmark regression} module training is strictly related to the availability of the images, the \textit{Landmarks Mapping} one is totally independent. The 2D-3D correspondence of landmarks used to train the model requires the only relative position of the landmarks from the CAD Model and the perspective matrix to be performed. This means that a possible further step to expand the dataset is to perform several simulations with rotations over multiple axis to create new wider datasets and improve the model performances.
+
+
+
+

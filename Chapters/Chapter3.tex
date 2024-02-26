@@ -1,0 +1,156 @@
+% Chapter Template
+
+\chapter{State of art} % Main chapter title
+
+\label{Chapter3}
+
+%----------------------------------------------------------------------------------------
+%	SECTION 1
+%----------------------------------------------------------------------------------------
+\section{Monocular pose estimation}
+
+\subsection{Classic Methods}
+Traditional pose estimation techniques usually use hand-crafted landmarks detectors and descriptors e.g. SIFT, SURF, MSER and BRIEF. These features serve as anchor points for establishing correspondences between 2D and 3D space, then estimate the pose using non-linear optimisation from the correspondence set. The landmarks are detected automatically and described using heuristic measures of geometric and photometric invariance.
+
+\subsubsection{Random Sample Consensus (RANSAC)}
+Robust algorithms like Random Sample Consensus (RANSAC) \cite{RANSAC} play a pivotal role in filtering out outliers and estimating pose accurately. It is a robust algorithm widely used in computer vision and geometry computations for model fitting. As presented in \cite{Lowe2004DistinctiveIF}, its primary objective is to estimate parameters of mathematical model from a set of observed data contaminated with outliers. RANSAC achieves this by iteratively selecting random subsets of data points, fitting a model to each subset, and identifying the consensus set of inliers that agree the model.
+
+After the random selection of a minimal subset of data points, the model is fitted to the randomly selected subset. The type of model depends on the specific application, such as lines, planes or more complex structures. The model is then used to classify the remaining data points as inliers or outliers based on a predefined threshold. Data points that fit the model within the threshold are considered inliers.\\
+The process is repeated from a fixed number of iterations, and the model with the largest consensus set (the set of inliers) is retained. With the consensus set, the model is refined using all inliers, and the final model parameters are obtained.
+
+However, this method is susceptible to changes in lighting conditions and large variations in pose and texture. Nonetheless, the earlier research has given birth to effective and well-understood geometric algorithms (e.g. PnP solvers) that are able to estimate the pose accurately and robustly, given a reasonable correspondence set.
+
+\subsubsection{Structure from Motion (SfM)}
+SfM \cite{SfM} represents a powerful paradigm for reconstructing the three-dimensional structure of a scene from a sequence of two-dimensional images. It assumes that the scene consists of static objects, and the motion is captured by the movement of the camera. SfM simultaneously estimates the camera poses and the 3D structure of the scene. Bundle Adjustment is a fundamental optimization technique within SfM, iteratively refining camera poses and the associated 3D structure. This approach is particularly effective in scenarios with sequential image captures, as seen in applications like photogrammetry.
+
+Firstly distinctive features, such as keypoints, are extracted from each image in the sequence and matched together, establishing 2D-2D or 2D-3D correspondences. The camera poses for each image are estimated using techniques like Perspective-n-Point (PnP) algorithms \cite{Lepetit2009EPnPAA}. The 3D coordinates of the scene points are mapped with a triangulation technique using the established correspondences and camera poses. Lastly the camera poses and 3D points are jointly refined to minimize the reprojection error across all images.
+
+SfM is widely applied in applications such as creating 3D models of structures, objects, or scenes from a collection of images. It contributes to the alignment of virtual and real-world elements in augmented reality applications.
+
+\subsection{End-to-End Learning}
+Motivated by the success of deep learning in image classification and object detection, end-to-end learning methods for pose estimation have emerged (\cite{E2E1}, \cite{E2E2}, \cite{E2E3}). The advent of convolution neural networks (CNN) has revolutionized pose estimation by enabling the automatic learning of hierarchical features from images. These networks can be applied for end-to-end pose regression or integrated into larger systems. Their adaptability makes them suitable for real-time systems and object tracking.\\
+These approaches utilize CNN architectures to learn complex non-linear mappings from input images to output poses. However, despite these end-to-end methods have demonstrated some success, they not achieved similar accuracy as geometry-based solutions.
+
+\subsubsection{PoseNet}
+PoseNet \cite{PosNet} is a pioneering deep learning architecture designed for estimating the camera pose directly from images. It reframes the pose estimation problem as a regression task, predicting both translation and rotation parameters.\\
+The network architecture typically includes convolutional layers for feature extraction followed by fully connected layers for regression.
+
+This approach is valuable in applications where real-time translation and rotation information are critical. However, the training process becomes more complex as diverse datasets are required for effective model generalization.
+
+\subsubsection{Mask R-CNN}
+Mask R-CNN \cite{MaskRCNN} represents a fusion of object detection and instance segmentation, providing detailed pose information for each detected object.
+In additional to identifying objects in image, it provides detailed information about the shape and location of each instance, making it suitable for accurate pose estimation.
+
+The model extends the Faster R-CNN architecture by incorporating an additional branch for predicting masks. This enables precise delineation of object boundaries, contributing to improved pose estimation, especially in scenario with complex object shapes.
+
+This architecture is particularly effective in scenarios where precise delineation of object boundaries is essential. However, its computational demands are higher compared to simpler architectures.
+
+\subsubsection{Hand-Eye Coordination Networks}
+Networks designed for hand-eye coordination focus on tasks where precise pose estimation is critical for robotic manipulation. These networks contribute to the seamless interaction between robotic arms and surrounding environment.
+
+These networks often involve architectures tailored for the specific requirements of robotic systems, combining vision-based pose estimation with control algorithms. They play a crucial role in applications such as robotic grasping and object manipulation.
+
+Challenges often arise due to limited data availability for specific tasks, requiring careful consideration during model development.
+
+\subsection{Feature Learning}
+Even though the above described methods have demonstrated some success, they have not achieved similar accuracy as geometry-based solutions. Indeed, recent work \cite{LimCNN} suggests that \textit{"absolute pose regression approaches are more closely related to approximate pose estimation via image retrieval"}, thus they may not generalise  well in practise.
+
+While the keypoint matching problem can be solved with machine learning, feature learning methods based on deep convolutional neural networks (CNNs) typically fix 2D-3D keypoints associations and learn to predict the image locations of each corresponding 3D landmark. Examples include studies such as \cite{E1}, \cite{E2} and \cite{E3}, which mainly differ in model architecture and the choice of keypoints. For instance, \cite{E2} employs semantic keypoints, while \cite{E3} opts for vertices of the 3D bounding box. 
+
+In this spaceborne scenario, objects are typically not occluded and have relatively rich texture. As a result, it was opted for object surface landmarks in order to better relate them to strong visual features.
+
+A notable commonality among these CNN-based methods is their shared characteristic of gradually transforming feature maps from high-resolution representations to low-resolution ones, then recovering them to high-resolution representations later in the process. Recent research emphasizes the significance of maintaining a high-resolution representation throughout tasks like object detection and human pose estimation \cite{sun2019deep}\cite{HRNet2}. Specifically, the High-Resolution Net (HRNet) \cite{sun2019deep}, illustrated in figure \textbf{\ref{fig:HRNet}}, upholds a high-resolution representation while exchanging information across parallel multi-resolution subnetworks, yielding superior spatial precision in landmark heatmaps. In the implemented satellite pose estimation framework, HRNet is leveraged to predict the locations of 2D landmarks in each image, contributing to achieving state-of-the-art accuracy.
+
+\subsubsection{HRNet}
+HRNet is a CNN with parallel high-to-low resolution subnetworks with repeated information exchange across multi-resolution subnetworks (multi-scale function) implemented for human pose estimation, aiming to detect the locations of \textit{K} keypoints or parts of the human body from an image.\\
+
+\begin{figure}[th]
+    \centering
+    \includegraphics[scale=0.8]{Figures/Chapter4/hrnet.png}
+    \caption[HRNet]{HRNet Architecture. The horizontal and vertical directions correspond to the depth of the network and the scale of the feature maps, respectively.}
+    \label{fig:HRNet}
+\end{figure}
+
+The architecture consists in two strided convolutions decreasing the resolution, a main body outputting the feature maps with the same resolution as its input feature maps, and a regressor estimating the heatmaps where the keypoints are chosen and transformed to the full resolution, see figure \textbf{\ref{fig:HRNet}}.
+
+Existing pose estimation networks are typically constructed by connecting subnetworks of varying resolutions in a sequential manner. Each subnetwork, representing a stage, comprises a series of convolutional layers, and there is a down-sampling layer between adjacent subnetworks to reduce the resolution by half. Let's denote $N_{sr}$ as the subnetwork in the sth stage, with $r$ indicating the resolution index (where its resolution is $\frac{1}{2^{(r-1)}}$ times lower than that of the first subnetwork). In a high-to-low network with $S$ stages, such as 4 stages, it can be represented as:
+\begin{equation}
+N_{11} \rightarrow N_{22} \rightarrow N_{33} \rightarrow N_{44}.
+\end{equation}
+
+\textit{HRNet} proposes a parallel multi-resolution subnetwork approach, starting with a high-resolution subnetwork as the initial stage. Subsequently, high-to-low resolution subnetworks are gradually added one by one, creating new stages, and connecting these multi-resolution subnetworks in parallel. As a result, the resolutions for the parallel subnetworks in a later stage consist of the resolutions from the previous stage, along with an extra lower one.\\
+An example network structure (with 4 parallel subnetworks) is gibven as follows:
+\begin{equation}
+\begin{aligned}
+    N_{11} \rightarrow N_{21} \rightarrow N_{31} \rightarrow N_{41}\\
+            \searrow N_{22} \rightarrow N_{32} \rightarrow N_{42}\\
+            \searrow N_{33} \rightarrow N_{43}\\
+            \searrow N_{44}\\
+\end{aligned}
+\end{equation}
+
+Exchange units are introduced across parallel subnetworks, enabling each subnetwork to repeatedly receive information from other parallel subnetworks. An example illustrates this information exchange scheme. In this example, the third stage is divided into several (e.g., 3) exchange blocks, with each block composed of three parallel convolution units. These parallel units are connected through exchange units, as shown below:
+\begin{equation}
+\begin{aligned}
+&C_{131} \searrow \quad\quad \nearrow C_{231} \searrow \quad\quad \nearrow C_{331} \searrow\\
+&C_{132} \rightarrow E_{13}  \rightarrow C_{232} \rightarrow E_{23}  \rightarrow C_{332} \rightarrow E_{33}\\
+&C_{133} \nearrow \quad\quad \searrow C_{233} \nearrow \quad\quad \searrow C_{333} \nearrow
+\end{aligned}
+\end{equation}
+
+Here, $C_{bsr}$ represents the convolution unit in the \textit{r}-th resolution of the \textit{b}-th block in the \textit{s}-th stage, and $E_{bs}$ is the corresponding exchange unit.\\
+
+The exchange unit aggregates the inputs, which are \textit{s} response maps: \{\(\textbf{X}_1, \textbf{X}_2, . . . , \textbf{X}_s\)\}, to produce \textit{s} response maps as outputs: \{\(\textbf{Y}_1, \textbf{Y}_2, . . . , \textbf{Y}_s\)\}, where the resolutions and widths remain consistent with the inputs. Additionally, an extra output map $\textbf{Y}_{s+1}$ is generated by the exchange unit across stages: $\textbf{Y}_{s+1} = a(\textbf{Y}_s, s + 1)$.\\
+
+The function $a(\textbf{X}_i, k)$ in this context includes upsampling or downsampling operations on $\textbf{X}_i$ from resolution \textit{i} to resolution \textit{k}. Downsampling is achieved through strided 3 × 3 convolutions, such as a single 3×3 convolution with a stride of 2 for 2× downsampling, or two consecutive strided 3 × 3 convolutions with a stride of 2 for 4× downsampling. For upsampling, nearest neighbor sampling is followed by a 1 × 1 convolution to align the number of channels. When $i = k, a(\cdot, \cdot)$ represents an identity connection, and $a(\textbf{X}_i, k)$ is equivalent to $\textbf{X}_i$.
+
+In the implemented method, the original architecture has been slightly modified in order to match the specifics of the analyzed case (grayscale 512x512 images).
+\begin{figure}[th]
+    \centering
+    \includegraphics[scale=0.8]{Figures/Chapter4/exchange_unit.png}
+    \caption[Exchange Unit]{Exchange unit. Right legend: strided 3 × 3 = strided 3 × 3 convolution, up samp. 1×1= nearest neighbor up-sampling following a 1×1 convolution.}
+    \label{fig:Exchange Unit}
+\end{figure}
+
+\subsection{Spacecraft pose estimation}
+Monocular spacecraft pose estimation techniques typically embrace a model-based strategy. For instance, in studies like \cite{DAmico2014PoseEO} and \cite{Sharma2018RobustMM}, the initial step involves image pre-processing and the utilization of feature detectors to identify salient features like line segments and basic geometric shapes. Subsequently, search algorithms are deployed to establish appropriate matches between the detected features and the 3D structure. Poses are then computed using Perspective-n-Point (PnP) solvers such as EPnP \cite{Lepetit2009EPnPAA}, and refinement is carried out through optimization techniques.\\
+As outlined in section \textbf{\ref{Chapter4}}, the implemented approach also generates 2D-3D correspondences; however, along with the coordinates of 2D landmarks, they are regressed using a trained deep network.
+
+The Spacecraft Pose Network (SPN) \cite{SPN} represents a crucial contribution to the spacecraft project estimation problem using deep learning methods. SPN employs a hybrid of classification and regression neural networks for solving the pose estimation problem. Initially, it predicts the bounding box of the satellite in the image using an object detection sub-network. Subsequently, a classification sub-network retrieves the n most relevant base rotations from the feature map of the detected object. The regression sub-network learns a set of weights and produces the predicted rotation as a weighted average of the n base rotations. Finally, SPN determines the relative translation of the satellite by leveraging constraints derived from the predicted bounding box and rotation (for more comprehensive overview of spacecraft pose estimation, please read \cite{Cassinis2019DelftUO}).
+
+\subsection{Point Set Alignments}
+
+\subsubsection{Iterative Closest Point (ICP)}
+Iterative Closest Point (ICP) \cite{ICP} is a popular algorithm used for aligning two sets of 3D points through an iterative optimization process. It is commonly employed in scenarios where a reference 3D model needs to be aligned with a partially observed or reconstructed 3D scene. ICP iteratively refines the transformation between the two point sets to minimize the distance between corresponding points.
+
+An initial transformation (translation and rotation) between the two point sets is estimated. the correspondences between the points in the reference and observed sets are established based on proximity, a weighted least-squares approach is used to minimize the distance between corresponding points, giving higher importance to reliable matches and the transformation is updated based on the registration results.\\
+The process is repeated iteratively until convergence, with a check for the change in transformation parameters.
+
+\subsubsection{Coherent Point Drift (CPD)}
+Coherent Point Drift (CPD) \cite{CPD} is a sophisticated mathematical technique used in the field of point cloud registration. The primary goal of CPD is to align one point cloud with another, ensuring that they match as closely as possible. This alignment is particularly useful when working with objects or scenes that undergo only rigid transformations, meaning that they can be translated and rotated without deformation. 
+
+CPD takes a unique approach by treating the point clouds as probability distributions. Each point in the source and target clouds is associated with a probability density. In essence, the source points represent samples from one distribution, and the target points represent samples from another. This probabilistic perspective allows CPD to find optimal correspondences between points in the source and target clouds.
+
+Given two point sets \(X = \{x_1, x_2, \ldots, x_N\}\) and \(Y = \{y_1, y_2, \ldots, y_M\}\) and initial point correspondences unknown, the estimation of the transformation is achieved through an optimization process with the objective of finding the optimal rigid transformation parameters to align \(X\) with \(Y\).
+
+\textbf{Mathematical Steps:}
+\begin{itemize}
+    \item \textbf{Initialization:} the transformation parameters: \(R\) (rotation matrix) and \(t\) (translation vector) are initialized.
+    \item \textbf{Expectation-Maximization (EM) Iterations:}
+    \begin{itemize}
+        \item \textbf{E-step (Expectation Step):} computes the soft correspondences between points in \(X\) and \(Y\) using a Gaussian Mixture Model (GMM) with only rigid transformations. The probability of correspondence \(P_{ij}\) between \(x_i\) and \(y_j\) is calculated based on the distance between transformed \(x_i\) and \(y_j\) using the current \(R\) and \(t\).
+        \begin{equation}
+            P_{ij} = \frac{\exp\left(-\frac{1}{2\sigma^2}\|R \cdot x_i + t - y_j\|^2\right)}{\sum_{k=1}^M \exp\left(-\frac{1}{2\sigma^2}\|R \cdot x_i + t - y_k\|^2\right)}
+        \end{equation}
+        \item \textbf{M-step (Maximization Step):} Updates the rotation matrix \(R\) and translation vector \(t\) based on the soft correspondences. It uses a closed-form solution to compute the optimal rotation and translation.
+        \begin{equation}
+            R, t = \text{arg}\min_{R, t} \sum_{i=1}^N \sum_{j=1}^M P_{ij} \|R \cdot x_i + t - y_j\|^2
+        \end{equation}
+    \end{itemize}
+    \item \textbf{Convergence Check:} It checks for convergence by examining the change in the transformation parameters between consecutive iterations. If the parameters converge or a maximum number of iterations is reached, the algorithm terminates.
+        \item \textbf{Output:} The final rotation matrix \(R\) and translation vector \(t\) represent the rigid transformation aligning \(X\) with \(Y\).
+\end{itemize}
+
+The Gaussian Mixture Model (GMM) is used to assign soft correspondences, allowing the algorithm to handle cases where points in one set do not have clear one-to-one correspondences with points in the other set. The algorithm iteratively refines the transformation parameters until convergence.
+
+As outlined in section \textbf{\ref{Chapter4/CPD}}, this approach is used in the implemented method to refine the final pose by the predicted 3D landmarks position.

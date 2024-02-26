@@ -1,0 +1,79 @@
+% Appendix Template
+
+\chapter{Support Code} % Main appendix title
+
+\label{AppendixA} % Change X to a consecutive letter; for referencing this appendix elsewhere, use \ref{AppendixX}
+\lstset{style=mystyle}
+\section{Ground Truth Heatmaps}
+\label{AppendixA1}
+\begin{lstlisting}[language=Python, caption=Ground Truth Heatmaps]
+import numpy as np
+
+def createHeatmap(landmark, vp, hmap_w, hmap_h, sig=1):
+    hmap = np.zeros((hmap_height + 3, hmap_width + 3))
+    x, y = landmark
+    if vp:
+        for i in range(y - 3*sig, y + 3*sig):
+            for j in range(x - 3*sig, x + 3*sig):
+                hmap[i,j]+=np.exp(-((i-y)** 2+(j-x)**2)/(2*sig**2))
+                
+    hmap = hmap[1:-2, 1:-2]
+        
+    return hmap
+
+def coord2Heatmap(landmarks, vis, hmap_w=512, hmap_h=512, sig=1):
+    hmaps = []
+
+    for landmark, vp in zip(landmarks, vis):
+        hmaps.append(createHeatmap(landmark,vp,hmap_w,hmap_h,sig))
+
+    hmaps = np.array(hmaps).squeeze()
+
+    return hmaps
+\end{lstlisting}
+
+\newpage
+
+\section{Landmark Location Selection}
+\label{AppendixA2}
+\begin{lstlisting}[language=Python, caption=Landmark Location Selection]
+import numpy as np
+
+def get_landmarks(landmarks_images, threshold1=-0.5, threshold2=-0.6):
+    landmarks2D = []
+    for img in landmarks_images:
+        Lnd_found = False
+        lndx = -1
+        lndy = -1
+        mask1 = img < threshold2
+        img[mask1] = -1
+        
+        if np.max(img) > threshold1:
+            Lnd_found = True
+        elif np.max(img) > threshold2 and np.var(img) > 2e-6:
+            Lnd_found = True
+            
+        if Lnd_found:
+            p_lndy,p_lndx = np.where(img == np.max(img))
+            lndx = np.round(np.mean(p_lndx))
+            lndy = np.round(np.mean(p_lndy))
+            if landmarks2D is not None or len(landmarks2D) > 0:
+                for data in landmarks2D:
+                    if data[2] == 1 and abs(lndx - data[0]) <= 3 
+                        and abs(lndy - data[1]) <= 3:
+                        if np.max(img)>data[3] and np.var(img)>data[4]:
+                            data[0] = -1
+                            data[1] = -1
+                            data[2] = 0
+                            n_lnd=[lndx,lndy,1,np.max(img),np.var(img)]
+                        else:
+                            n_lnd = [-1,-1,0,np.max(img),np.var(img)]
+
+            n_lnd = [lndx,lndy,1,np.max(img),np.var(img)]
+        else:
+            n_lnd = [-1,-1,0,np.max(img),np.var(img)]
+        
+        landmarks2D.append(n_lnd)
+
+    return np.array(landmarks2D)
+\end{lstlisting}
