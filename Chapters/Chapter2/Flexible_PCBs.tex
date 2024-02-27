@@ -1,0 +1,67 @@
+\section{Flexible PCBs}
+The monocular camera model, a foundational concept in computer vision and imaging, mimics the behavior of a pinhole camera to represent the process of capturing and projecting images. This model simplifies the intricate workings of an optical system to enable a comprehensive understanding of the relationship between the three-dimensional (3D) world and the resulting two-dimensional (2D) image.
+
+In this model, we envision light passing through a minute aperture, analogous to a pinhole, projecting an inverted image onto a photosensitive surface, often a digital or analog image sensor. Key intrinsic parameters, including the focal length and principal point, characterize the camera's optical properties. The focal length dictates the scale of the captured scene, while the principal point marks the location where the optical axis intersects the image plane.
+
+Coordinate systems play a pivotal role in this model, with the camera coordinate system centered at the optical center and the image coordinate system representing points on the image plane. The intrinsic parameters, encompassing the focal length and principal point, along with extrinsic parameters like rotation and translation, define the camera's pose in space.
+
+A fundamental mathematical concept, perspective projection (described in depth in section \textbf{\ref{Chapter2/PerspProj}}), captures the transformation from 3D points in the camera coordinate system to their 2D projections on the image plane. This equation involves the intrinsic matrix, encapsulating the focal lengths and principal points, and the coordinates of the 3D points.
+
+While the monocular camera model serves as a fundamental abstraction, it often considers ideal conditions, neglecting real-world imperfections such as lens distortion. Distortion correction parameters may be introduced to refine the model, enhancing its accuracy.
+
+Monocular cameras find extensive applications in various domains, from smartphones to surveillance cameras. They are integral to computer vision tasks, such as object recognition, pose estimation and structure-from-motion. The simplicity and versatility of the monocular camera model make it a cornerstone for comprehending the principles of image formation and interpretation in the broader field of computer vision.
+\newpage
+The camera model displacement and orientation with respect to the world's reference system can be expressed as follow:
+
+\begin{figure}[th]
+    \centering
+    \includegraphics[scale=0.3]{Figures/Chapter2/Camera_model.jpg}
+    \caption[Camera Model]{Camera Model}
+    \label{fig:CameraModel}
+\end{figure}
+
+\begin{enumerate}
+    \item displacement $\textbf{w}_0$ of the origin of the camera reference system.
+    \item Pan of x axis (rotation around x axis).
+    \item Tilt of z axis (rotation around z axis).
+    \item Displacement $\textbf{r}$ of the image plane with respect to the center of the joint, on which the camera is mounted and around which can be rotated.
+\end{enumerate}
+
+For the two linear displacements, their respective translation matrices are obtained as follow:
+\begin{equation}
+    \textbf{G} = 
+    \begin{bmatrix}
+    \mathbbm{1} & -\textbf{w}_0\\
+    0 & 1\\
+    \end{bmatrix}
+    \quad 
+    \textbf{C} = 
+    \begin{bmatrix}
+    \mathbbm{1} & -\textbf{r}\\
+    0 & 1\\
+    \end{bmatrix}
+\end{equation}
+
+The resultant rotation matrix, given the above rotations about x and z axis is:
+\begin{equation}
+    \textbf{R} = R_\alpha R_\theta = 
+    \begin{bmatrix}
+    cos(\theta) & sin(\theta) & 0 & 0\\
+    -sin(\theta)cos(\alpha) & cos(\theta)cos(\alpha) & sin(\alpha) & 0\\
+    sin(\theta)sin(\alpha) & -cos(\theta)sin(\alpha) & cos(\alpha) & 0\\
+    0 & 0 & 0 & 1
+    \end{bmatrix}
+\end{equation}
+
+To compute the total transformation of a point from the 3D world to the image plane a perspective projection matrix $\textbf{P}$ is needed. The next section is dedicated to the deep description of this concept.
+
+The total transformation is computed as follows:
+\begin{equation}
+    c_h = \textbf{PCRG}w_h
+\end{equation}
+
+% -- Subsection 2.1
+\subsection{Pro and Cons of flexible coils with respect to normal ones}
+
+% -- Subsection 2.2
+\subsection{Non-standard applications of PCBs}

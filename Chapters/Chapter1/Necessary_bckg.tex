@@ -1,0 +1,78 @@
+\section{Necessary background (?)}
+\label{Chapter1/Dataset}
+The algorithm is designed around \textit{TASI EROSS IOD Simulated Dataset N°2}, which consists of grayscale images of the satellite; see figure \textbf{\ref{fig:Samples}}.\\
+The training dataset is composed of sixteen trajectories each of 900 images. Each trajectory covers the distance range from 200 to 20 cm to the target and the difference between each subsequent frame captured by each camera is 0.2 cm. Each image is of size 512x512 pixels and it's paired with ground truth 6DOF poses (position and orientation).
+\begin{figure}[th]
+    \centering
+    \includegraphics[scale=0.48]{Figures/Chapter1/DatasetExample.png}
+    \caption[Sample images from \textit{TASI EROSS IOD Simulated Dataset N°2}]{Sample images from the \textit{TASI EROSS IOD Simulated Dataset N°2}}
+    \label{fig:Samples}
+\end{figure}
+\newpage
+The data acquisition has been performed as follow:
+\begin{itemize}
+    \item \textbf{Non Prepared scenario:} LAR view.
+    \item \textbf{Natural Illumination:} Full illumination (sun @45°, 130k lux).
+    \item \textbf{Illumination system:} ON (150lm x6 LEDs).
+    \item \textbf{Simulated Camera Settings:}
+        \begin{itemize}
+            \item Shutter speed: 20
+            \item ISO: 5
+            \item Aperture: 4
+            \item FOV: 67.8°
+        \end{itemize}
+    \item \textbf{Reference System:}
+        \begin{itemize}
+            \item Left-handed XYZ reference.
+            \item Origin [0,0,0]:
+            \begin{itemize}
+                \item XY: zeroes on the vertical symmetry axis of the Target.
+                \item Z: Positive towards contact, zeroed on the lowest contact point of the LAR.
+            \end{itemize}
+            \item All units are in centimeters (cm).
+        \end{itemize}
+    \item \textbf{Trajectories:}
+        \begin{itemize}
+            \item all trajectories follow the same XYZ coordinates.
+            \item the rotation is considered with Euler angles as Pitch (around axis x), Yaw (around axis y) and Roll (around axis z), all positive counterclockwise. Trajectories' specifics are reported in table \textbf{\ref{tab:trajectories}}.
+            \item Camera pointing XY in [-46, +20].
+        \end{itemize}
+\end{itemize}
+
+\begin{figure}[th]
+    \centering
+    \includegraphics[scale=0.8]{Figures/Chapter1/UPS.png}
+    \caption[Model's UPS]{Model's UPS}
+    \label{fig:UPS}
+\end{figure}
+
+\begin{table}[H]
+\caption{Specifics of the simulated training trajectories.}
+\label{tab:trajectories}
+\centering
+\begin{tabular}{l | l l l}
+\toprule
+Trajectory & Roll(°) & Pitch(°) & Yaw(°)\\
+\midrule
+TRAY\_1 & 0 & 0 & 0\\
+TRAY\_2 & 0 & 0 & -1\\
+TRAY\_3 & 0 & 0 & -2\\
+TRAY\_4 & 0 & 0 & -3\\
+TRAY\_5 & 0 & 0 & -4\\
+TRAY\_6 & 0 & 0 & -5\\
+TRAY\_7 & 0 & 1 & 0\\
+TRAY\_8 & 0 & 2 & 0\\
+TRAY\_9 & 0 & 3 & 0\\
+TRAY\_10 & 0 & 4 & 0\\
+TRAY\_11 & 0 & 5 & 0\\
+TRAY\_12 & -1 & 0 & 0\\
+TRAY\_13 & -2 & 0 & 0\\
+TRAY\_14 & -3 & 0 & 0\\
+TRAY\_15 & -4 & 0 & 0\\
+TRAY\_16 & -5 & 0 & 0\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The \textit{TASI EROSS IOD Simulated Dataset N°3} along with the \textit{Less\_Difficult\_Trajectory} and \textit{Difficult\_Trajectory} are used as the test dataset. The \textit{TASI EROSS N°3} is composed of two trajectories, each of which was captured with two different camera positions. Each trajectory has 900 images.\\
+The \textit{TRAY\_A} starts with +15° on Yaw and linearly converge toward 0 on contact, while \textit{TRAY\_B}, \textit{Less\_Difficult\ Trajectory} and \textit{Difficult\_Trajectory} present multiple errors on RPY converging toward 0 on contact as well.

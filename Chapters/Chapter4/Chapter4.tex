@@ -1,0 +1,115 @@
+% Chapter Template
+
+\chapter{Powering circuit design} % Main chapter title
+
+\label{Chapter4} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+
+%----------------------------------------------------------------------------------------
+%	SECTION 1
+%----------------------------------------------------------------------------------------
+\input{Chapters/Chapter4/Controller}
+%----------------------------------------------------------------------------------------
+%	SECTION 2
+%----------------------------------------------------------------------------------------
+\section{Amplifier circuit}
+The online architecture operates in real-time. It processes the input data from the camera and produces as output the satellite pose estimation.
+
+After being pre-processed, the image captured from the camera is passed to the \textit{Landmark regression} module. The latter predicts the 2D location \{\(\textbf{z}_i\)\} of the 9 landmarks along with the visibility coefficient \{\(v_i\)\} for each of them. The \textit{Landmark Mapping} module then uses these data to compute the 3D position of each landmark with respect to the camera frame. The final 6DOF pose of the satellite is then computed from the CPD module. Figure \textbf{\ref{fig:Online Pipeline}} shows the online pipeline of the implemented methodology.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{Figures/Chapter4/Online Pipeline.png}
+    \caption[Online pipeline of the implemented pose estimator.]{Online pipeline of the implemented pose estimator.}
+    \label{fig:Online Pipeline}
+\end{figure}
+
+
+\subsection{High Power Operational Amplifiers}
+\label{Chapter4/Pre-Processing}
+The image captured from the camera is pre-processed in the \textit{Pre-Processing} module. It consists in a bilateral filter, which is a non-linear, edge-preserving smoothing filter that reduces noise while preserving the edges in an image.\\
+The mathematical steps behind the bilateral filter involve computing weighted averages of pixel values within a local neighborhood. 
+\begin{figure}[th]
+    \centering
+    \includegraphics[scale=0.32]{Figures/Chapter4/bilateral_filtering.png}
+    \caption[Bilateral Filter.]{Bilateral Filter mathematical steps.}
+    \label{fig:Bilateral Filter}
+\end{figure}
+
+The formula for the bilateral filter operation can be described as follows:
+
+Given an input image \(I(x, y)\) and the filter parameters:
+\begin{itemize}
+    \item \(d\) (diameter of each pixel's neighborhood)
+    \item \(\sigma_c\) (standard deviation of the color space)
+    \item \(\sigma_s\) (standard deviation of the spatial space)
+\end{itemize}
+The filtered output image \(B(x, y)\) can be computed using the following equation for each pixel \((x, y)\):
+\begin{equation}
+   B(x, y) = \frac{1}{W(x, y)} \sum_{(i, j) \in S} I(i, j) \cdot G_c(I(x, y), I(i, j), \sigma_c) \cdot G_s(x, y, i, j, \sigma_s) 
+\end{equation}
+
+
+Where:
+\begin{itemize}
+    \item \(S\) is the neighborhood of pixel \((x, y)\), defined by a window of diameter \(d\).
+    \item \(G_c\) is the color similarity term, which measures the similarity in color between pixels \((x, y)\) and \((i, j)\) in the color space.
+    \item \(G_s\) is the spatial similarity term, which measures the spatial proximity between pixels \((x, y)\) and \((i, j)\).
+    \item \(W(x, y)\) is a normalization factor.
+\end{itemize}
+The \(G_c\) term is defined as a Gaussian function in the color space:
+\begin{equation}
+    G_c(I(x, y), I(i, j), \sigma_c) = \exp\left(-\frac{\|I(x, y) - I(i, j)\|^2}{2\sigma_c^2}\right)
+\end{equation}
+
+The \(G_s\) term is a Gaussian function in the spatial space:
+\begin{equation}
+    G_s(x, y, i, j, \sigma_s) = \exp\left(-\frac{\|(x, y) - (i, j)\|^2}{2\sigma_s^2}\right)
+\end{equation}
+
+\begin{figure}[th]
+    \centering
+    \includegraphics[scale=0.5]{Figures/Chapter4/Pre-processing.png}
+    \caption[Input and pre-processed image.]{On the left the original sample image from the training dataset, on the right the resultant image after the application of the bilaterial filter ($d = 40,\sigma_c = 40,\sigma_s = 200$).}
+    \label{fig:Pre-processing}
+\end{figure}
+
+The bilateral filter operates by applying these Gaussian weighting functions to compute the weighted average of pixel values within the defined neighborhood, both in color and spatial spaces, resulting in a smoothed image that preserves edges and details. The filter helps reduce noise while keeping the important structures in the image intact.
+
+\subsection{Coherent Point Drift (CPD)}
+\label{Chapter4/CPD}
+As the \textit{Landmark Mapping} module predicts the position of each landmark independently one from the other and so each landmark has its own error over the three axis, the resultant cloud of points is misaligned with respect to the rigid reference position given by the CAD model.\\
+In order to estimate the 6DOF pose of the satellite and in the meantime overcome this misalignment problem a mathematical technique is used: Coherent Point Drift.
+
+Two sets of 3D points are present: one is the "target", which represents the 3D position of the landmarks in the camera frame supposing no translation and no rotation, and the other is "source", which is the 3D position of the predicted landmarks.
+The "source" point set is only composed by landmarks identified in the image frame (\(v_i = 1\)). It is important to know that the algorithm's performances strongly depend on the number of points in the set so, with the camera approaching the target, some landmarks are cut from the image frame and consequently the pose estimation accuracy reduces.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.23]{Figures/Chapter4/CPD.png}
+    \caption[Iterations of the CPD optimization process.]{Iterations of the CPD optimization process.}
+    \label{fig:CPD}
+\end{figure}
+%----------------------------------------------------------------------------------------
+%	SECTION 3
+%----------------------------------------------------------------------------------------
+
+\section{Implementation problems and Technical choices }
+\subsection{Landmarks Selection}
+\label{Chapter4/LandmarksSel}
+The main problem in the implementation of the \textit{Landmark regression} module (\textbf{\ref{Chapter4/LandReg}}) is the selection of the landmarks.
+Selecting meaningful landmarks is a critical first step, requiring a accurate understanding of the satellite's structure. These landmarks must possess distinct characteristics that remain invariant under varying conditions, such as changes in lighting, orientation, or potential occlusions.
+
+The first performed attempt in the selection of the landmarks was composed of 11 landmarks with relevant features in the satellite's structure. Most of those visual features were similar to each others and the resultant heatmap predicted by the CNN for a single landmark was ambiguous among multiple ones. This led to a complicated recognition of the landmark location in the image with complex and heavier algorithms for the 2D position identification.
+
+In both cases the set of landmarks has been selected near the approach target to limit the number of out of frame landmark in closer positions.
+
+\subsection{Dataset availability}
+\label{Chapter4/DatasetAv}
+Another notable challenge stems from the limited size of available datasets. A smaller dataset poses a risk of overfitting, potentially hindering the model's ability to generalize across diverse scenarios. Addressing this issue requires careful consideration of data augmentation techniques, introducing various transformations to enhance the model's adaptability.
+
+The dataset used for training present five different orientations on each axis of the satellite during the whole approaching range. The main limitation given by the used dataset is the lack of combined rotations over multiple axis and a wider range of rotation on single axis.
+
+Even though the \textit{Landmark regression} module training is strictly related to the availability of the images, the \textit{Landmarks Mapping} one is totally independent. The 2D-3D correspondence of landmarks used to train the model requires the only relative position of the landmarks from the CAD Model and the perspective matrix to be performed. This means that a possible further step to expand the dataset is to perform several simulations with rotations over multiple axis to create new wider datasets and improve the model performances.
+
+
+
+
