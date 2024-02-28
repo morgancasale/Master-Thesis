@@ -1,0 +1,31 @@
+\section{Implementation problems and possible alternatives}
+
+% -- Subsection 5.1
+\subsection{Non idealities}
+\label{Chapter4/LandmarksSel}
+The main problem in the implementation of the \textit{Landmark regression} module (\textbf{\ref{Chapter4/LandReg}}) is the selection of the landmarks.
+Selecting meaningful landmarks is a critical first step, requiring a accurate understanding of the satellite's structure. These landmarks must possess distinct characteristics that remain invariant under varying conditions, such as changes in lighting, orientation, or potential occlusions.
+
+The first performed attempt in the selection of the landmarks was composed of 11 landmarks with relevant features in the satellite's structure. Most of those visual features were similar to each others and the resultant heatmap predicted by the CNN for a single landmark was ambiguous among multiple ones. This led to a complicated recognition of the landmark location in the image with complex and heavier algorithms for the 2D position identification.
+
+In both cases the set of landmarks has been selected near the approach target to limit the number of out of frame landmark in closer positions.
+
+\subsubsection{Stability}
+
+\subsubsection{Phase Shift}
+
+\subsubsection{Noise}
+
+% -- Subsection 5.2
+\subsection{Polarized signals}
+
+% -- Subsection 5.3
+\subsection{Alternative Amplifiers}
+\label{Chapter4/DatasetAv}
+Another notable challenge stems from the limited size of available datasets. A smaller dataset poses a risk of overfitting, potentially hindering the model's ability to generalize across diverse scenarios. Addressing this issue requires careful consideration of data augmentation techniques, introducing various transformations to enhance the model's adaptability.
+
+The dataset used for training present five different orientations on each axis of the satellite during the whole approaching range. The main limitation given by the used dataset is the lack of combined rotations over multiple axis and a wider range of rotation on single axis.
+
+Even though the \textit{Landmark regression} module training is strictly related to the availability of the images, the \textit{Landmarks Mapping} one is totally independent. The 2D-3D correspondence of landmarks used to train the model requires the only relative position of the landmarks from the CAD Model and the perspective matrix to be performed. This means that a possible further step to expand the dataset is to perform several simulations with rotations over multiple axis to create new wider datasets and improve the model performances.
+
+\subsubsection{Current Amplifiers}
