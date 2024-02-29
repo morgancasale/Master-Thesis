@@ -1,9 +1,7 @@
 \section{Experimentation and Evaluation}
 
-%-----------------------------------
-%	SUBSECTION 1
-%-----------------------------------
-\subsection{Metrics}
+% -- Subsection 3.1
+\subsection{Flexar Coils}
 The final pose estimation scores are defined according to \cite{KPEC} score definition, which consists in the identification of translation and rotational errors and their respective scores.\\
 The estimated pose of each image is evaluated using a rotation error $E_R$ and a translation error $E_T$. Lets consider $q^*$ the rotation quaternion ground truth of an image and $q$ its estimation and, analogously, $\textbf{t}^*$ the ground truth translation of an image and $\textbf{t}$ the respective estimation.\\
 The orientation error $E_R$ is calculated as the angular distance between the predicted, $q^*$ and ground truth true $q$ unit quaternions, i.e., the magnitude of the rotation that aligns the target body frame with the camera reference frame.
@@ -52,14 +50,12 @@ The overall module error is defined as the L2 norm of the computed mean error:
     E_{NN} = \|E_{3D}\|_2
 \end{equation}
 
-%-----------------------------------
-%	SUBSECTION 2
-%-----------------------------------
-\subsection{Evaluation on Training Dataset}
+% -- Subsection 3.2 
+\subsection{Heating testing}
 \label{Chapter5/EvalTraining}
 Two distinct experiments are conducted to comprehensively evaluate the performance of the implemented method. In the first experiment, the method underwent rigorous testing on the training dataset, where it is exposed to known data. This initial experiment serves as a crucial phase for fine-tuning and optimizing the model's parameters.
 
-\subsubsection{Landmark Regression}
+\subsubsection{Single coil in DC}
 As predictable, as far as the camera gets closer to the target region, the landmark location prediction becomes more granular and accurate.
 
 It is important to notice that the performed experiment takes into account 40 cm as minimum distance from the target. This is due to an accurate results analysis which reports that in closer positions the number of landmarks in the camera frame is not sufficient to predict correctly the pose.
@@ -115,7 +111,7 @@ Overall & 1.38 $\pm$ 0.06\\
 \caption{Landmark Regression module results.}
 \end{table}
 
-\subsubsection{Landmark Mapping}
+\subsubsection{Single coil in AC [-V, V]}
 
 The evaluation of the performances of \textit{Landmark Mapping} module is performed on both multi-models configuration and single model configuration.
 
@@ -218,7 +214,8 @@ Overall & (1.12 $\pm$ 0.48) cm & (0.85 $\pm$ 0.35) cm \\
 \end{table}
 
 \newpage
-\subsubsection{Final Pose Evaluation}
+
+\subsubsection{Single coil in AC [0, 2V]}
 
 The \textit{CPD} module introduces an ulterior error due to the alignment of the reference points set with the predicted one.
 
@@ -319,10 +316,14 @@ Overall & 1.38 $\pm$ 0.06 & 0.85 $\pm$ 0.35 & 1.85 $\pm$ 1.19 & 0.058 & 0.0168 &
 \label{tab:ResSingTrain}
 \end{table}
 
+\subsubsection{Two coils in parallel DC}
+\subsubsection{Two coils in parallel AC}
+
 \newpage
 Tables \textbf{\ref{tab:ResMultiTrain}} and \textbf{\ref{tab:ResSingTrain}} highlight that the single-model configuration demonstrates superior overall performance ($S$ = 0.0178) compared to the multi-model configuration ($S$ = 0.0208). However, it's noteworthy that the multi-model configuration has slightly better performance in the rotation aspect despite the overall advantage of the single-model setup.
 
-\subsection{Evaluation on Test Datasets}
+% -- Subsection 3.2
+\subsection{Magnet size vs Force}
 \label{Chapter5/EvalTest}
 The second experiment is carried out on a separate test dataset composed of four new and unseen trajectories. This test dataset is intentionally kept independent from the training data, simulating real-world scenarios and ensuring the model's generalization capabilities. The performance on the test dataset provides insights into the method's ability to extrapolate learned patterns and accurately handle novel data instances. Together, these two experiments facilitate a comprehensive assessment of the method's robustness, effectiveness, and generalization across different datasets.
 
@@ -455,3 +456,7 @@ Overall & 1.35 $\pm$ 0.04 & 8.67 $\pm$ 180.0 & 12.9 & 0.435 & 0.0897 & 0.0076 & 
 \end{tabular}
 \caption{Results on test set with single-model configuration.}
 \end{table}
+
+
+% -- Subsection 3.4
+\subsection{Voltage vs Force}
