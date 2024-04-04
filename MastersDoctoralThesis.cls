@@ -215,6 +215,7 @@
 \DeclareDocumentCommand{\author}{m}{\newcommand{\authorname}{#1}\renewcommand{\@author}{#1}}
 \NewDocumentCommand{\supervisor}{m}{\newcommand{\supname}{#1}}
 \NewDocumentCommand{\cosupervisor}{m}{\newcommand{\cosupname}{#1}}
+\NewDocumentCommand{\cocosupervisor}{m}{\newcommand{\cocosupname}{#1}}
 \NewDocumentCommand{\examiner}{m}{\newcommand{\examname}{#1}}
 \NewDocumentCommand{\degree}{m}{\newcommand{\degreename}{#1}}
 \NewDocumentCommand{\addresses}{m}{\newcommand{\addressname}{#1}}
@@ -223,6 +224,7 @@
 \NewDocumentCommand{\otheruniversity}{m}{\newcommand{\otherunivname}{#1}}
 
 \NewDocumentCommand{\department}{m}{\newcommand{\deptname}{#1}}
+\NewDocumentCommand{\supervisordepartment}{m}{\newcommand{\supdeptname}{#1}}
 \NewDocumentCommand{\otherdepartment}{m}{\newcommand{\otherdeptname}{#1}}
 
 \NewDocumentCommand{\group}{m}{\newcommand{\groupname}{#1}}
