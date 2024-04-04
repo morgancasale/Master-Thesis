@@ -35,7 +35,7 @@ The term \textit{"dimension"} can be misleading in neural networks, since, used 
 \end{figure}
 
 % -- Subsection 4.2
-\subsection{Costant voltage vs current supply}
+\subsection{Costant voltage vs current power supply}
 The neural network can functions in regression or classification. In the first case the output is a number predicted on the base of the input data, in the second one the identification of a specific class o category. It is important to note that the output of a regression or two-class classification model is a number (binary for the classification 1 for true value 0 or -1 for false value), but in case of multi-class classification the neural network has an output neuron for each category. 
 
 % -- Subsection 4.3
@@ -62,7 +62,9 @@ The neurons can be classified in four categories, depending on their position in
     \item\textbf{Bias Neurons:} introduces an additional learnable parameter that improves the prediction's accuracy by shifting the activation threshold on the activation function.
 \end{itemize}
 
-%\subsubsection{Activation Functions}
+\subsection{AC polarized signals}
+
+\subsubsection{Need for low RMS signals}
 Activation functions, or transfer functions, have the role of computing the output of each layer of a neural network. Historically the more common are hyperbolic tangent, sigmoid, or linear activation functions. However, with modern deep learning models, specialized activation functions have been introduced to suit specific applications and tasks:
 \begin{itemize}
     \item\textbf{Rectified Linear Unit (ReLU):} use for the output hidden layers.

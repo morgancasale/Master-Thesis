@@ -1,7 +1,6 @@
 \section{Experimentation and Evaluation}
 
-% -- Subsection 3.1
-\subsection{Flexar Coils}
+%\subsection{Flexar Coils}
 The final pose estimation scores are defined according to \cite{KPEC} score definition, which consists in the identification of translation and rotational errors and their respective scores.\\
 The estimated pose of each image is evaluated using a rotation error $E_R$ and a translation error $E_T$. Lets consider $q^*$ the rotation quaternion ground truth of an image and $q$ its estimation and, analogously, $\textbf{t}^*$ the ground truth translation of an image and $\textbf{t}$ the respective estimation.\\
 The orientation error $E_R$ is calculated as the angular distance between the predicted, $q^*$ and ground truth true $q$ unit quaternions, i.e., the magnitude of the rotation that aligns the target body frame with the camera reference frame.
@@ -50,7 +49,7 @@ The overall module error is defined as the L2 norm of the computed mean error:
     E_{NN} = \|E_{3D}\|_2
 \end{equation}
 
-% -- Subsection 3.2 
+% -- Subsection 3.1 
 \subsection{Heating testing}
 \label{Chapter5/EvalTraining}
 Two distinct experiments are conducted to comprehensively evaluate the performance of the implemented method. In the first experiment, the method underwent rigorous testing on the training dataset, where it is exposed to known data. This initial experiment serves as a crucial phase for fine-tuning and optimizing the model's parameters.

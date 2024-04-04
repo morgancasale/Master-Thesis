@@ -13,6 +13,11 @@ The implemented code can be accessed in \cite{JMF}.
 % -- Subsection 4.1
 \subsection{ESP32 waveform generator for a single module}
 
+\subsubsection{Controller code}
+
+\subsubsection{Esp32 DAC limitations}
+
+\subsubsection{Esp32 DAC Noise}
 \label{Chapter4/2D-3D}
 The computation of the 3D position of landmarks in the training images involves a transformation process that leverages the relative positions of the selected landmarks with respect to the satellite's reference system, as well as the position and orientation of the camera.
 
@@ -43,7 +48,7 @@ Furthermore, perspective projection transformation (described in section \textbf
 
 % -- Subsection 4.2
 \newpage
-\subsection{RasPi controller for multiple modules}
+%\subsection{RasPi controller for multiple modules}
 \label{Chapter4/LandReg}
 Each training image is first pre-processed (description of the pre-processing process in section \textbf{\ref{Chapter4/Pre-Processing}}) and then coupled with a set of ground truth 2D landmarks \{\(\textbf{z}_{i}\)\}, as described in section \textbf{\ref{Chapter4/2D-3D}}. Those labels are used to supervise the training of the regression model to predict the 2D position of landmarks in the testing images. An additional label is introduced to handle images that capture only partially the satellite, the visibility coefficient \{\(v_{i}\)\}.
 \begin{equation}
