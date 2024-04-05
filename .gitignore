@@ -1,6 +1,7 @@
+*.aux
 /svg-inkscape
 /Figures
 /main.*
 
-/!main.tex
-/!main.pdf
+!main.tex
+!main.pdf
