@@ -1,0 +1,13 @@
+\subsection{Running flexible PCB coils}
+
+\subsubsection{High current needs}
+As discussed in the previous paragraph flexible coils have very high resistance so to produce even low magnetic fields high current must be provided.
+Considering the power limit of the Flexar coil $P_{max} = 0.8W$ we can calculate the maximum current that can be provided to the coil with \eqref{Joule_heating} as
+\begin{equation}
+    I = \sqrt{\frac{P_{max}}{R}} = \sqrt{\frac{0.8}{30}} = 0.1633A
+\end{equation}
+
+This value of current is pretty high for standard AC circuits based on operational amplifiers.
+Op amps usually have a maximum output current of some tens of milliamps.
+An option to power these coils could be to use premade audio amplifiers, but this would limit their working frequency range as audio amplifiers are designed to work in the audible frequency range which is about 20Hz to 20kHz.
+Meanwhile, as this research's goal is to apply this technology to haptic applications we have to consider that the human tactile perception range is from sub 1Hz to 1kHz.

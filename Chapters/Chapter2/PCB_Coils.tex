@@ -1,63 +1,12 @@
 \section{PCB Coils}
-\label{Chapter2/PerspProj}
-Perspective projection is a fundamental concept in computer graphics and computer vision. It's a mathematical technique used to simulate how 3D scene or object appears when projected onto a 2D surface, such as a computer scene or image plane. The goal of perspective projection is to create a realistic representation of how objects in the 3D world would look from a particular viewpoint, taking into account the effects of distance and perspective. Some fundamental principles of perspective projections are:
-\begin{itemize}
-    \item\textbf{Vanishing Point:} objects that are far away from the camera appear smaller and converge to a single point in the distance, called vanishing point. This effect creates a sense of depth and realism in the projected image.
-    \item\textbf{Depth Perception:} Perspective projection accurately portrays the relative depth of objects, making objects closer to the camera larger and objects father smaller. This mimics the way human eye and camera lens perceive depth in the real world.
-    \item\textbf{Foreshortening:} Perspective Projection results in foreshortening, where objects viewed from an angle are distorted in their shape and dimensions. This distortion is crucial for creating realistic images.
-    \item\textbf{Depth Cues:} Perspective Projection includes depth cues, such as the overlap of objects, changes in size, and relative position of objects in the field of view., which help the viewer understand the spacial relationships between objects.
-\end{itemize}
-
-\begin{figure}[th]
-    \centering
-    \includegraphics[scale=0.8]{Figures/Chapter2/perspective.jpg}
-    \caption[Perspective projection]{Perspective projection.}
-    \label{fig:Projection}
-\end{figure}
-
-In computer graphics, the perspective matrix (or projection matrix) is used to transform 3D points in 2D coordinates on the screen. This projection is a crucial step in rendering 3D scenes in 2D images.\parencite{HughesDamEtAl13}\\
-\noindent
-The perspective matrix has several configurations depending on the specific conventions, camera parameters or coordinate systems used. The mono camera used in this project is considered ideal, with negligible distortion coefficient and squared field of view. \\
-The field of view (FOV) is a fundamental concept in optics, computer graphics and computer vision. It refers to the extent of the observable world that can be seen through a particular device, such as camera, human eye or computer screen. The FOV determines the angle within which object or scenes are visible and it's usually specified as an angular quantity. In this setup, a squared field of view (FOV) implies that the vertical viewing angle is the same as the horizontal viewing angle. \\
-The image below present a visual representation of the FOV:
-
-\begin{figure}[th]
-    \centering
-    \includegraphics[scale=0.3]{Figures/Chapter2/FOV.png}
-    \caption[FOV]{Visual FOV representation.}
-    \label{fig:FOV}
-\end{figure}
-
-\noindent
-As discussed above, a simple implementation of the perspective matrix is enough for our purposes. The matrix is defined as follows:
-
-\begin{equation}
-    \textbf{P} = 
-    \begin{bmatrix}
-    \frac{f}{a_{r}} & 0 & 0 & 0\\
-    0 & f & 0 & 0\\
-    0 & 0 & \frac{(z_{far} + z_{near})}{(z_{near} - z_{far})} & \frac{2*z_{far}*z_{near}}{(z_{near} - z_{far})}\\
-    0 & 0 & -1 & 0
-\end{bmatrix}
-\end{equation}
-
-The \textit{f} is the focal length of the camera and it's computed as $f = 1/tan(\frac{FOV}{2})$ with \textit{FOV} expressed in radians. The $a_{r}$ is the aspect ratio coefficient needed if the horizontal field of view is different from the vertical one, in this configuration it's 1. The $z_{near}$ and $z_{far}$ represent the distances to the near and far clipping planes, respectively. They define the range of distances of objects in the scene when projected from 3D space to 2D space.
-
-\begin{figure}[th]
-    \centering
-    \includegraphics[scale=0.58]{Figures/Chapter2/projection.png}
-    \caption[Perspective projection of an object]{Object's perspective projection}
-    \label{fig:Opp}
-\end{figure}
+The biggest problem with standard coils is their size, especially in the z-direction as the more windings are used the thicker they will become. This is a problem for applications where space is limited, such as in the case of implantable devices. To address this issue, researchers have started to experiment with creating coil windings using PCB technology. This allows for the creation of coils that are thinner and more compact than traditional coils. In this section, we will discuss the different types of PCB coils and the challenges associated with their miniaturization.
 
 % -- Subsection 1.1
-\subsection{Overview of magnetic field production with coils}
+\input{Chapters/Chapter2/PCB_coils/Planar_coils.tex}
 
 % -- Subsection 1.2
-\subsection{Planar coils}
+\input{Chapters/Chapter2/PCB_coils/Planar_coil_magn_field.tex}
 
 % -- Subsection 1.3
-\subsection{Multi-layer PCB coils}
+\input{Chapters/Chapter2/PCB_coils/Multi-layer_PCB_coils.tex}
 
-% -- Subsection 1.4
-\subsection{Challenges of miniaturization}

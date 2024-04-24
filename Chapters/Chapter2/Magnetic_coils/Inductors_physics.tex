@@ -1,0 +1,79 @@
+\subsection{Physics of an inductor?}
+
+\subsubsection{Inductance}
+All conductors have some inductance, which may have either desirable or detrimental effects in practical electrical devices. The inductance of a circuit depends on the geometry of the current path and the magnetic permeability of nearby materials.
+
+Any alteration to a circuit that increases the flux (total magnetic field) through the circuit produced by a given current increases the inductance, because inductance is equal to the ratio of magnetic flux to current
+
+\begin{equation}
+    L = \frac{\Phi(i)}{i} \label{eq: Inductance_&_flux}
+\end{equation}
+
+Where:
+\begin{itemize}
+    \item $L$ is the inductance [H].
+    \item $i$ is the current [A].
+    \item $\Phi(i)$ is the magnetic flux through the circuit [Wb].
+\end{itemize}    
+
+\subsubsection{Reactance}
+When a current signal is applied to an inductor, a flux is generated and, considering Faraday's law of induction, any change in flux through a circuit induces an electromotive force ${\mathcal {E}}$, proportional to the rate of change of flux
+
+\begin{equation}
+    {\mathcal {E}} = -L \frac{d\Phi(t)}{dt}
+\end{equation}
+
+Then using Lenz's law, the voltage across the inductor is given by
+
+\begin{equation}
+    V = -L \frac{di}{dt}
+\end{equation}
+
+Inductors resist changes in current due to the magnetic field they generate when current passes through them. When we apply a sinusoidal signal to our inductor, the current will be continuously changing direction. The inductor's opposition to these changes is represented as reactance.
+
+Inductive reactance (\(X_L\)) is measured in ohms and is calculated using the formula:
+
+\begin{equation}
+    X_L = 2\pi fL
+\end{equation}
+
+Where:
+\begin{itemize}
+    \item \( X_L \) = Inductive reactance [\(\Omega\)]
+    \item \( f \) = Frequency of the AC current [Hz]
+    \item \( L \) = Inductance of the inductor [H]
+\end{itemize}
+
+We can then calculate the total impedance of the inductor as
+
+\begin{equation}
+    Z = \sqrt{R^2 + X_L^2}
+\end{equation}
+
+Where:
+\begin{itemize}
+    \item \( Z \) = Total impedance [\(\Omega\)]
+    \item \( R \) = Resistance of the inductor [\(\Omega\)]
+    \item \( X_L \) = Inductive reactance [\(\Omega\)]
+\end{itemize}
+
+\subsubsection{Joule heating}
+Inductors are passive components, meaning they do not generate energy. However, they do store energy in the form of a magnetic field. When the current through an inductor changes, the magnetic field changes, and energy is stored in the field. When the current decreases, the magnetic field collapses, and the energy is returned to the circuit. This energy is dissipated as heat in the inductor's windings.
+
+The power dissipated in an inductor is given by the relation
+
+\begin{equation}
+    P = |I|^2R = \frac{|V|^2}{|Z|^2}R
+    \label{eq: Joule_heating}
+\end{equation}
+
+Where:
+\begin{itemize}
+    \item \( P \) = Power dissipated in the inductor [W]
+    \item \( I \) = Current flowing through the inductor [A]
+    \item \( R \) = Resistance of the inductor [\(\Omega\)]
+    \item \( V \) = Voltage across the inductor [V]
+    \item \( Z \) = Total impedance of the inductor [\(\Omega\)]
+\end{itemize}
+
+
