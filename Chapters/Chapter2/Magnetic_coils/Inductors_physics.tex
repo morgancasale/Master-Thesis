@@ -63,8 +63,7 @@ Inductors are passive components, meaning they do not generate energy. However, 
 The power dissipated in an inductor is given by the relation
 
 \begin{equation}
-    P = |I|^2R = \frac{|V|^2}{|Z|^2}R
-    \label{eq: Joule_heating}
+    P = |I_{RMS}|^2R = \frac{|V_{RMS}|^2}{|Z|^2}R\label{eq: Joule_heating}
 \end{equation}
 
 Where:
@@ -76,4 +75,41 @@ Where:
     \item \( Z \) = Total impedance of the inductor [\(\Omega\)]
 \end{itemize}
 
+\subsubsection{Definition of Root Mean Square (RMS) values}
+As we have seen in the previous paragraphs, the power dissipated by the coil depends on the root mean square values of the current and voltage.
+We use the RMS values because they allow us to compare the power dissipated by the coil when powered in AC and DC conditions.
+For DC signals these values are equal to the DC one, while for sinusoidal signals $V_{RMS}$ can be calculated as
+\begin{equation}
+    V_{RMS} = \sqrt{{1 \over {T}} {\int_{T}^{0} {[f(t)]}^2\, {\rm d}t}}
+\end{equation}
 
+Where:
+\begin{itemize}
+    \item \(T\) is the period of the input signal
+    \item \(f(t)\) is the function of the signal 
+\end{itemize}
+
+Then in case we're dealing with AC signals having a DC offset we can use the formula
+\begin{equation}
+    V_{RMS_{AC+DC}} = \sqrt{V_{DC}^2 + V_{RMS_{AC}}^2}
+\end{equation} 
+
+Some formulas for important waveforms:
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|l l l|} % <-- Alignments: 1st column left, 2nd column left
+        \hline
+        \rowcolor{black} {\color{white} Name} & \quad {\color{white} Waveform} & \quad {\color{white} $V_{RMS}$} \cr
+        \hline
+        DC & \quad $V_P$ & \quad $V_P$ \cr
+        \hline
+        Sine Wave $[-V_P, V_P]$ & \quad $V_P \sin(2 \pi f t)$ & \quad $\frac{V_P}{\sqrt{2}}$ \cr
+        \hline
+        Polarized Sine Wave $[0, V_P]$ & \quad $\frac{V_P}{2} (\sin(2 \pi f t)+1)$ & \quad $\frac{V_P}{2} \sqrt\frac{3}{2}$ \cr
+        \hline
+        Square Wave $[-V_P, V_P]$ & \quad $V_P \text{sgn}(\sin(2 \pi f t))$ & \quad $V_P$ \cr
+        \hline
+        DC-shifted Square Wave $V_{DC}+[-V_P, V_P]$ & \quad $V_{DC} + V_P \text{sgn}(\sin(2 \pi f t))$ & \quad $\sqrt{V_{DC}^2 + V_P^2}$ \cr
+        \hline
+    \end{tabular} % TODO: Fixare sta merda
+\end{table}
