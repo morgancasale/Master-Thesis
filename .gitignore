@@ -1,7 +1,10 @@
-*.aux
+.aux
+.bbl-SAVE-ERROR
+
 /svg-inkscape
 /Figures
 /main.*
 
 !main.tex
 !main.pdf
+main.bbl-SAVE-ERROR
