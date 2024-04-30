@@ -1,9 +1,15 @@
 \subsection{Planar coils}
 As PCBs are 2D objects we can't work on the z-axis to create the coil's windings. This means that the windings have to be created on the same plane. 
 In 1984 researchers from Osaka University proposed the first implementation of a possible solution in the form of planar coils.
-They proposed and tested a structure comprised of concentric spirals, with different shapes, made of a conductive material (mostly copper) suspended in an insulation material and then covered by two magnetic material layers \textcolor{red}{(???)}\cite{OG_plan_coils}.
+They proposed and tested a structure comprised of concentric spirals, with different shapes, made of a conductive material (mostly copper) suspended in an insulation material and then covered by two magnetic material layers \textcolor{red}{(???)}\cite{OG_plan_coils}. % TODO: Check this "magnetic material layers" part
 
-\includesvg[draft = false, width = 1\textwidth]{Chapters/Chapter2/PCB_coils/Figures/planar_coil.svg}
+\begin{figure}
+    \centering
+    \resizebox{.8\linewidth}{!}{\includesvg[draft = false, width = 1\textwidth]{Chapters/Chapter2/PCB_coils/Figures/planar_coil.svg}}
+    \caption{Internal structure of a planar coil.}
+    \label{fig: Planar_coil_structure}
+\end{figure}
+
 %(spiega i layers)
 
 With the mainstream adoption of PCBs in the electronics industry, researchers have created planar coils using PCBs by etching spiral patterns on the copper layer. This allowed for the production of planar coils easily and cheaply.
