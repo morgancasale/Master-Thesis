@@ -1,0 +1,31 @@
+\begin{tikzpicture}
+    \begin{scope}[every node/.style={bgelement}]
+    \node (Se) at (0,0) {Se: Power Supply};
+    \node[right=1 of Se] (i) {1: elec};
+    \node[above=1 of i] (Iel) {I: L\textsubscript{coil}};
+    \node[below=1 of i] (Rel) {R: R\textsubscript{coil}};
+    \node[right=1 of i] (CI) {CI: Coil+Magnet};
+    \node[right=1 of CI] (w1) {1: mech};
+    \node[above=1 of w1] (Cm) {C: C\textsubscript{membrane}};
+    \node[below=1 of w1] (Im) {I: M\textsubscript{magnet} + M\textsubscript{finger}};
+    \node[right=1 of w1] (v) {0};
+    \node[above=1 of v] (w2) {1};
+    \node[above=1 of w2] (Rdf) {R: Rd\textsubscript{finger}};
+    \node[right=1 of w2] (Cf) {C: $\frac{1}{Ks_{finger}}$};
+    \node[right=1 of v] (Sfa) {S\textsubscript{finger}};
+    \end{scope}
+    \draw[bonds]
+    (Se) edge [e_out] (i)
+    (i) edge [e_in] (Iel)
+    edge [e_in] (Rel)
+    edge [e_in] (CI)
+    (CI) edge [e_in] (w1)
+    (w1) edge [e_out] (Cm)
+    edge [e_in] (Im)
+    (w1) edge [e_in] (v)
+    (v) edge [e_in] (w2)
+    (w2) edge [e_in] (Rdf)
+    (w2) edge [e_in] (Cf)
+    (Sfa) edge [e_out] (v);
+\end{tikzpicture}
+    

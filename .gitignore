@@ -8,3 +8,5 @@
 !main.tex
 !main.pdf
 main.bbl-SAVE-ERROR
+*.aux
+*.bbl

@@ -1,0 +1,20 @@
+\begin{tikzpicture}
+    \begin{scope}[every node/.style={bgelement}]
+        \node (start) at (0,0) {};
+        \node[right=1 of start] (w1) {1};
+        \node[above=1 of w1] (Mf) {I: M\textsubscript{f}};
+        \node[right=1 of w1] (v) {0};
+        \node[above=1 of v] (w2) {1};
+        \node[above=1 of w2] (Rdf) {R: Rd\textsubscript{f}};
+        \node[right=1 of w2] (Cf) {C: $\frac{1}{Ks_{f}}$};
+        \node[right=1 of v] (Sfa) {Sf\textsubscript{a}};
+    \end{scope}
+    \draw[bonds]
+    (start) edge [e_out, flow={v}, effort={F}] (w1)
+    (w1) edge [e_out] (Mf)
+    (w1) edge [e_in] (v)
+    (v) edge [e_in] (w2)
+    (w2) edge [e_in] (Rdf)
+    (w2) edge [e_in] (Cf)
+    (Sfa) edge [e_out] (v);
+\end{tikzpicture}

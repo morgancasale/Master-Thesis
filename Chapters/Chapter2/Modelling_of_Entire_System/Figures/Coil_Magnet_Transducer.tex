@@ -1,0 +1,11 @@
+\begin{tikzpicture}
+    \begin{scope}[every node/.style={bgelement}]
+    \node (start) at (0,0) {};
+    \node[right=1 of start] (CI) {CI: Coil+Magnet};
+    \node[right=1 of CI] (end) {};
+    \end{scope}
+    \draw[bonds]
+    (start) edge [e_in, flow={i}, effort={V}] (CI)
+    (end) edge [e_in, flow={v}, effort={F}] (CI);
+\end{tikzpicture}
+    

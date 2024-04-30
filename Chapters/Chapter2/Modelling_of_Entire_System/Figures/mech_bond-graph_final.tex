@@ -1,0 +1,12 @@
+\begin{tikzpicture}
+    \begin{scope}[every node/.style={bgelement}]
+    \node (start) at (0,0) {};
+    \node[right=1 of start] (w) {1: Mech};
+    \node[above=1 of w] (Cm) {C: $\frac{1}{ks_{membr}}$};
+    \node[right=1 of w] (Im) {I: M\textsubscript{magnet}};
+    \end{scope}
+    \draw[bonds]
+    (start) edge [e_in, flow={i}, effort={V}] (w)
+    (w) edge [e_out] (Cm)
+    (w) edge [e_in] (Im);
+\end{tikzpicture}

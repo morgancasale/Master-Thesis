@@ -80,7 +80,7 @@ As we have seen in the previous paragraphs, the power dissipated by the coil dep
 We use the RMS values because they allow us to compare the power dissipated by the coil when powered in AC and DC conditions.
 For DC signals these values are equal to the DC one, while for sinusoidal signals $V_{RMS}$ can be calculated as
 \begin{equation}
-    V_{RMS} = \sqrt{{1 \over {T}} {\int_{T}^{0} {[f(t)]}^2\, {\rm d}t}}
+    V_{RMS} = \sqrt{\frac{1}{T} {\int_{T}^{0} {[f(t)]}^2\, {\rm d}t}}
 \end{equation}
 
 Where:
@@ -95,21 +95,9 @@ Then in case we're dealing with AC signals having a DC offset we can use the for
 \end{equation} 
 
 Some formulas for important waveforms:
-\begin{table}[h!]
+\begin{figure}
     \centering
-    \begin{tabular}{|l l l|} % <-- Alignments: 1st column left, 2nd column left
-        \hline
-        \rowcolor{black} {\color{white} Name} & \quad {\color{white} Waveform} & \quad {\color{white} $V_{RMS}$} \cr
-        \hline
-        DC & \quad $V_P$ & \quad $V_P$ \cr
-        \hline
-        Sine Wave $[-V_P, V_P]$ & \quad $V_P \sin(2 \pi f t)$ & \quad $\frac{V_P}{\sqrt{2}}$ \cr
-        \hline
-        Polarized Sine Wave $[0, V_P]$ & \quad $\frac{V_P}{2} (\sin(2 \pi f t)+1)$ & \quad $\frac{V_P}{2} \sqrt\frac{3}{2}$ \cr
-        \hline
-        Square Wave $[-V_P, V_P]$ & \quad $V_P \text{sgn}(\sin(2 \pi f t))$ & \quad $V_P$ \cr
-        \hline
-        DC-shifted Square Wave $V_{DC}+[-V_P, V_P]$ & \quad $V_{DC} + V_P \text{sgn}(\sin(2 \pi f t))$ & \quad $\sqrt{V_{DC}^2 + V_P^2}$ \cr
-        \hline
-    \end{tabular} % TODO: Fixare sta merda
-\end{table}
+    \resizebox{.9\linewidth}{!}{\input{Chapters/Chapter2/Magnetic_coils/Figures/RMS_table.tex}}
+    \caption{RMS values for different waveforms.}
+    \label{fig: RMS_table}
+\end{figure}
