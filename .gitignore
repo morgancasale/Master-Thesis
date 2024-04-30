@@ -10,3 +10,6 @@
 main.bbl-SAVE-ERROR
 *.aux
 *.bbl
+*.fls
+*.log
+*.fdb*
