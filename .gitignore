@@ -1,5 +1,8 @@
-.aux
-.bbl-SAVE-ERROR
+**.aux
+**.bbl*
+**.fls
+**.log
+**.fdb*
 
 /svg-inkscape
 /Figures
@@ -8,8 +11,3 @@
 !main.tex
 !main.pdf
 main.bbl-SAVE-ERROR
-*.aux
-*.bbl
-*.fls
-*.log
-*.fdb*
