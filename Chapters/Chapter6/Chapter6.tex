@@ -31,8 +31,7 @@ Moreover, rotation pose can be more effectively predicted with the incorporation
 
 \section{Possible Improvements}
 \label{Chapter6/Improv}
-\subsection{Landmark Selection}
-As already discussed at section \textbf{\ref{Chapter4/LandmarksSel}}, the selection of the number and position of landmarks in the model is crucial for the resulting performances of the system. Since the final translation and rotation errors ($E_T$, $E_R$) are strictly related to the number of landmarks identified in the image frame, which reduces in positions closer to the target, a suitable improvement would be the increase of the initial number of landmarks.
+
 
 Another option would be using multiple models also for the \textit{Landmark Regression} module, which are able to identify a target set of landmarks in farther positions and a second set in closer distances to the target, in order to keep the number of identified points in the image frame as greater as possible.\\
 This implementation would also lead to a more accurate pose estimation in positions closer to the minimum distance analyzed in the experiments (from $40 cm$ to $20cm$). A well-performed pose estimation in positions very close to the target would help to minimize any errors introduced by camera distortions.

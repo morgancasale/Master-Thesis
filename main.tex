@@ -28,20 +28,20 @@
 %----------------------------------------------------------------------------------------
 
 \documentclass[
-%draft, % To disable image rendering
-11pt, % The default document font size, options: 10pt, 11pt, 12pt
-oneside, % Two side (alternating margins) for binding by default, uncomment to switch to one side
-english, % Language
-singlespacing, % Single line spacing, alternatives: onehalfspacing or doublespacing
-%draft, % Uncomment to enable draft mode (no pictures, no links, overfull hboxes indicated)
-%nolistspacing, % If the document is onehalfspacing or doublespacing, uncomment this to set spacing in lists to single
-%liststotoc, % Uncomment to add the list of figures/tables/etc to the table of contents
-%toctotoc, % Uncomment to add the main table of contents to the table of contents
-parskip, % Uncomment to add space between paragraphs
-%nohyperref, % Uncomment to not load the hyperref package
-headsepline, % Uncomment to get a line under the header
-%chapterinoneline, % Uncomment to place the chapter title next to the number on one line
-%consistentlayout, % Uncomment to change the layout of the declaration, abstract and acknowledgements pages to match the default layout
+    %draft, % To disable image rendering
+    11pt, % The default document font size, options: 10pt, 11pt, 12pt
+    oneside, % Two sides (alternating margins) for binding by default, uncomment to switch to one side
+    english, % Language
+    singlespacing, % Single line spacing, alternatives: onehalfspacing or doublespacing
+    %draft, % Uncomment to enable draft mode (no pictures, no links, overfull hboxes indicated)
+    %nolistspacing, % If the document is onehalfspacing or doublespacing, uncomment this to set spacing in lists to single
+    %liststotoc, % Uncomment to add the list of figures/tables/etc to the table of contents
+    %toctotoc, % Uncomment to add the main table of contents to the table of contents
+    parskip, % Uncomment to add space between paragraphs
+    %nohyperref, % Uncomment to not load the hyperref package
+    headsepline, % Uncomment to get a line under the header
+    %chapterinoneline, % Uncomment to place the chapter title next to the number on one line
+    %consistentlayout, % Uncomment to change the layout of the declaration, abstract, and acknowledgments pages to match the default layout
 ]{MastersDoctoralThesis} % The class file specifying the document structure
 
 \usepackage{svg}
@@ -58,6 +58,7 @@ headsepline, % Uncomment to get a line under the header
 
 \usepackage{tikz}
 \usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 \usepgfplotslibrary{fillbetween}
 \usetikzlibrary{patterns}
 \usepackage{bondgraphs}
@@ -181,7 +182,7 @@ sorting=nty
 
 \mainmatter % Begin numeric (1,2,3...) page numbering
 
-\pagestyle{thesis} % Return the page headers back to the "thesis" style
+\pagestyle{thesis} % Return the page headers to the "thesis" style
 
 % Include the chapters of the thesis as separate files from the Chapters folder
 % Uncomment the lines as you write the chapters
