@@ -1,8 +1,9 @@
-\section{State of the Art}
+\section{State of the Art in vibrotactile haptic feedback}
 For now, state of the art in haptic feedback is still in its infancy.
 The main reason for this is the complexity of the human sense of touch which we still don't understand fully.
-The best technology we have for now to reproduce haptic feedback is the piezoelectric actuator.
+The best technology we have for now to reproduce haptic feedback through vibrotactile means is the piezoelectric actuator.
 
+% --- SUBSECTION 1
 \subsection{Piezoelectric actuators}
 Piezoelectric actuators are a very interesting technology based on the piezoelectric effect.
 Materials exhibiting this effect, such as certain ceramics and crystals, possess the ability to convert electrical energy into mechanical motion, and vice versa.
@@ -11,9 +12,37 @@ The operating principle of piezoelectric actuators relies on the application of 
 
 One of the defining characteristics of piezoelectric actuators is their rapid response time. Unlike traditional electromagnetic actuators, which may suffer from inertia and mechanical backlash, piezoelectric actuators can swiftly change their state in response to electrical signals.
 
+\subsubsection{Frequency response}
+Piezoelectric actuators are perfect for haptic applications as they can provide a wide range of frequencies.
+Piezo specifically engineered for haptic feedback can provide a frequency range from 1 Hz to 1 kHz. \\
+
+All piezoelectric actuators have a natural frequency at which they resonate. This frequency is determined by the mechanical properties of the actuator, such as its mass and stiffness, as well as the electrical properties of the piezoelectric material.
+The important thing to note is that this frequency also depends on the load that the actuator is driving:
+\begin{equation}
+    f_{res} = \frac{1}{2\pi} \sqrt{\frac{k}{m_{eff}+m_{load}}}
+\end{equation}
+Where:
+\begin{itemize}
+    \item \( f_{res} \) = Resonant frequency [Hz]
+    \item \( k \) = Stiffness of the piezo actuator [N/m]
+    \item \( m_{eff} \) = Effective mass of the actuator [kg]
+    \item \( m_{load} \) = Mass of the load [kg]
+\end{itemize}
+
+As the frequency of the actuator approaches its resonant frequency, the amplitude of the actuator's motion increases significantly. This phenomenon must be taken into account when designing a control system for the piezo actuator, as at maximum voltage the actuator could be damaged if in resonance.
 
 \subsubsection{Force performances}
+Taking as an example a piezo actuator built specifically for haptic feedback, the PowerHap series from TDK \cite{Piezo_Haptic_Actuator}, we can see that the actuator can provide a force up to \textbf{20N} in a frequency range from 1 Hz to 500Hz.
 
-\subsubsection{Frequency response}
+\subsubsection{Power consumption}
+Considering still as an example the PowerHap series from TDK, we can read from the datasheet that the actuator can be run with a peak voltage of 120V and an average current of 0.432A (calculated using \cite{Power_piezo_calculator} in the case of a square wave signal of 500Hz). This means that the actuator can consume up to 25.9 of power at its peak frequency.
+In the same condition, it will also dissipate about 2.59W of power as heat.
 
-\subsubsection{WeArt implementation}
+% % --- SUBSECTION 2
+\subsection{Texture rendering} % TODO: Decide if this section is needed
+\begin{itemize}
+    \item frequency requirements
+    \item force requirements
+    \item response time
+\end{itemize}
+

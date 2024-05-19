@@ -1,19 +1,29 @@
 % Chapter Template
 
 \chapter{Powering circuit design} % Main chapter title
-
-\label{Chapter4} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+\label{Chapter4}
+In this chapter, we will present some of the engineering challenges faced during the design of a power circuit for our flexible voice coil actuator.
+We will mostly describe an ideal circuit as we will later demonstrate that running this actuator would require very advanced analog circuitry, comprised of high-cost components.
+Most of the tests we will present have been done using a bench signal generator and amplifier.
 
 %----------------------------------------------------------------------------------------
 %	SECTION 1
 %----------------------------------------------------------------------------------------
 \input{Chapters/Chapter4/Power_Circuit_Block_diagram}
+The power circuit can be summarized as a block diagram, as shown in figure \ref{fig:Power_Circuit_Block_Diagram}.
+\begin{figure}[H]
+    \centering
+    \resizebox{.9\linewidth}{!}{\includegraphics{Chapters/Chapter4/Figures/power_circuit_block_diagram.jpg}} % TODO: sostituire con svg
+    \caption{Block diagram of the power circuit.}
+    \label{fig:Power_Circuit_Block_Diagram}    
+\end{figure}
 
 %----------------------------------------------------------------------------------------
 %	SECTION 2
 %----------------------------------------------------------------------------------------
 \input{Chapters/Chapter4/Controller}
-
+The controller we used for testing is an ESP32 microcontroller.
+We chose this controller for the simplicity of programming and the integrated DAC.
 %----------------------------------------------------------------------------------------
 %	SECTION 3
 %----------------------------------------------------------------------------------------
