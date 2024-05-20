@@ -1,6 +1,15 @@
 \section{Controller}
+The controller in this application has to be a signal generator that can produce a waveform that can be amplified and sent to the coil.
+The controller we used for testing is an ESP32 microcontroller.
+We chose this controller as the first test hardware for its simplicity of programming and its integrated DAC.
 
 % -- Subsection 4.1
+\subsection{ESP32 DAC Characteristics}
+The DAC included in the ESP32 is a pretty basic one but as a first test, it is enough.
+The DAC has a resolution of 8 bits, and it can output a voltage between 0 and 3.3V.
+It can output max to a sinusoidal wave of 250kHz, but the signal is very noisy.
+
+
 \subsection{ESP32 waveform generator for a single module}
 
 \subsubsection{Controller code}
