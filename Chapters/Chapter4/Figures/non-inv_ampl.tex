@@ -1,0 +1,23 @@
+\begin{circuitikz}
+    % Draw the op-amp
+    \draw (0,0) node[op amp] (opamp) {};
+
+    % Draw the connection between the + node and the ground
+    \draw (opamp.+) -- ++(0,-0.5) node[ground] {};
+
+    % Draw the first resistor to input (l_ is to put the name on top)
+    \draw (opamp.-) to[R, l_=$R_1$] ++ (-2,0) to[short, o-] ++ (0,0) node[left]{$V_{in}$} {};
+
+    % Go up one unit and create fb node
+    \draw (opamp.-) -- ++ (0,1) coordinate(fb);
+    
+    % Draw the feedback resistor
+    \draw (fb) to[R=$R_f$] ++ (2.5,0) coordinate(end);
+
+    % Draw the connection between the end of Rf and the output of the op-amp, (opamp.out -| end) is the intersection between the vertical line from the output of the op-amp and the horizontal line from the end of Rf
+    \draw (end) -- (opamp.out -| end) -- (opamp.out) coordinate(out);
+
+    % Draw the output node 
+    \draw (out) to[short, -o] ++ (1,0) node[right]{$V_{out}$} ;
+    
+\end{circuitikz}
