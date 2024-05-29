@@ -1,0 +1,19 @@
+\begin{tikzpicture}
+    \begin{axis}[
+            xmin=0, ymin=0, xmax=8, ymax=2.5, samples=500,
+            xlabel={Voltage [$V_{rms}$]},ylabel={Power [$W$]}, title={Power output vs $V_{rms}$}
+        ]
+
+        \addplot[blue, thick, domain=0:8, name path=func] (x, x^2/30);
+        \addplot[red, thick, name path=limit] coordinates {
+            (sqrt(0.8*30), \pgfkeysvalueof{/pgfplots/ymin}) 
+            (sqrt(0.8*30), \pgfkeysvalueof{/pgfplots/ymax})
+        }; % vertical limit line 
+
+        \path[name path=axis] (axis cs:\pgfkeysvalueof{/pgfplots/xmin},0) -- (axis cs:\pgfkeysvalueof{/pgfplots/xmax},0);
+        \path[name path=vend] (axis cs:\pgfkeysvalueof{/pgfplots/xmax},\pgfkeysvalueof{/pgfplots/ymin}) -- (axis cs:\pgfkeysvalueof{/pgfplots/xmax},\pgfkeysvalueof{/pgfplots/ymax});
+
+        \addplot[red!25] fill between [of = limit and vend];
+        % TODO: Add label to the limit line and legend
+    \end{axis}
+\end{tikzpicture}
