@@ -1,0 +1,48 @@
+\subsection{Flexar coils}
+Flexar coils are flexible PCB coils designed by the independent researcher Carl Bugeja \cite{Carl_Bugeja}.
+He designed these very thin flexible coils intending to use them to actuate very small robots and lightweight objects.
+This characteristic comes at the cost of not being able to produce very high magnetic fields.
+We will be using for this research an old model of the Flexar coil that precedes the opening of the company \textbf{microbots} \cite{microbots}.
+\begin{figure}
+    \centering
+    \resizebox{0.5\textwidth}{!}{\includegraphics{Chapters/Chapter5/Coils_alternatives/Figures/Flexar_coil.png}}
+    \caption{Flexar coil }
+    \label{fig:Flexar_coil}
+\end{figure}
+
+
+\subsubsection{Lower resistance and power needs}
+We previously discussed the Flexar coil's characteristics in section \ref{subsec: Application challenges}.
+But to sum up they have a \textbf{resistance} of about \textbf{30$\Omega$}, \textbf{external radius} of \textbf{6.86e-3m}, \textbf{internal} one of about \textbf{1e-4m}, and \textbf{number of spires} equal to \textbf{70} (composed of two coils of 35 in series).
+It can handle up to about \textbf{0.8W} before starting to release too much heat.
+
+We report here the same graph as the previously cited section:
+\begin{figure}
+    \centering
+    \resizebox{0.5\textwidth}{!}{\input{Chapters/Chapter5/Coils_alternatives/Figures/Flexar_power_profile.tex}}
+    \caption{Power profile of the Flexar coil}
+    \label{fig: Flexar_heat_graph}
+\end{figure}
+
+As we can see in figure \ref{fig: Flexar_heat_graph}, the Flexar coil can handle more power than the Dresden coil.
+
+\subsubsection{Higher magnetic field strength}
+Due to their characteristics, Flexar coils can produce higher magnetic fields than the Dresden coil but not unlike them, they are still limited by the power they can handle.
+\begin{figure}
+    \centering
+    \resizebox{0.5\textwidth}{!}{\input{Chapters/Chapter5/Coils_alternatives/Figures/Flexar_magnetic_field_vs_P.tex}}
+    \caption{Magnetic field produced by the Flexar coil}
+    \label{fig: Flexar_magnetic_field_vs_P}
+\end{figure}
+As we can observe in figure \ref{fig: Flexar_magnetic_field_vs_P}, the Flexar coil, at the power limit of the Dresden coil, can produce a higher magnetic field (in the order of 2.5mT).
+This proves that the Flexar coil is more capable than the Dresden coil in producing magnetic fields but even at its power limit the field produced is still feeble (it is in the order of \textbf(4mT)).
+
+\subsubsection{Higher flexibility}
+Flexible PCBs are made of a substrate of polyimide, which is a very flexible material.
+It can withstand being bent at a very tight radius multiple times without breaking.
+
+Between the layers of polyimide, we have the copper traces that don't require any tinning to work.
+This makes the Flexar coil more durable than the Dresden coil, as it doesn't have any parts that can crack due to bending or heating and cooling.
+
+Also, we observed that the Flexar coil can withstand temperatures in exceed of 100$^{\circ}$C.
+

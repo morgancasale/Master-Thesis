@@ -1,0 +1,46 @@
+\subsection{Dresda coils}
+The technology the HZDR team used to produce their coil is based on circuit inkjet printing.
+Circuit inkjet printing consists of using a printer to deposit conductive ink on a substrate.
+In this application, they used a flexible substrate to print the coil to allow it to be bent.
+After printing the conductive ink is tinned to improve the conductivity of the coil and allow it to be soldered to other components.
+\begin{figure}
+    \centering
+    \resizebox{0.5\textwidth}{!}{\includegraphics{Chapters/Chapter5/Coils_alternatives/Figures/Dresden_coil.jpg}}
+    \caption{Dresden coil \cite{HZDR}}
+    \label{fig:Dresden_coil}
+\end{figure}
+
+\subsubsection{Low resistance and high power needs}
+The Dresden coils have a \textbf{resistance} of about \textbf{2$\Omega$}, \textbf{external radius} of \textbf{5e-3m}, \textbf{internal} one of \textbf{0.84*e-3m}, and \textbf{number of spires} equal to \textbf{11}.
+We also know from the HZDR test that the coil can handle up to about \textbf{500mA} before starting to release too much heat.
+This means a power limit of about \textbf{0.5W} for the coil.
+
+The current limit is due to the very low resistance of the coil as due to this limitation, for low applied voltages the coil will produce a lot of heat due to the Joule effect \ref{subsubsec: Joule_effect}.
+
+\begin{figure}
+    \centering
+    \resizebox{0.5\textwidth}{!}{\input{Chapters/Chapter5/Coils_alternatives/Figures/Dresden_heat_graph.tex}}
+    \caption{Power profile of the Dresden coil}
+    \label{fig: Dresden_heat_graph}
+\end{figure}
+As we can see in figure \ref{fig: Dresden_heat_graph}, after 1V the power limit is already reached.
+
+\subsubsection{Low magnetic field strength}
+For the same reason as the power limit, the magnetic field produced by the Dresden coil is very low.
+Using the equation \ref{eq:Spiral_magn_field_eq} we can calculate the magnetic field produced by the Dresden coil on its surface and plot it as a function of the voltage applied to the coil.
+\begin{figure}
+    \centering
+    \resizebox{0.5\textwidth}{!}{\input{Chapters/Chapter5/Coils_alternatives/Figures/Dresden_magn_field_vs_P.tex}}
+    \caption{Magnetic field produced by the Dresden coil}
+    \label{fig: Dresden_magnetic_field}
+\end{figure}
+
+As we can see in figure \ref{fig: Dresden_magnetic_field}, even at the power limit, the magnetic field produced by the Dresden coil is very low (in the order of 1mT).
+
+\subsubsection{Fragility and low flexibility}
+The Dresden coil is produced by using three layers of different materials.
+The first layer is the substrate, which is made of a material similar to paper, the second layer is the conductive ink, and the third layer is the tinning.
+The substrate is not very flexible, and neither is the tinning;
+this makes the spires of the coil easily damageable if bent repeatedly.
+Also, the tinning gets cracked by repeatedly heating and cooling the coil, which constantly happens during the coil's use.
+The tinning cracking would happen multiple times during our tests, and we would have to re-tin the damaged parts of the coil to keep using it.

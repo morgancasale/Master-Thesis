@@ -1,50 +1,60 @@
 \section{Rigid Prototypes}
-In conducting this research, careful consideration was given to the selection of tools and technologies that would best support the implementation, experimentation, and analysis processes. This section provides an overview of the programming languages, machine learning frameworks, data processing tools, and other technologies employed throughout the research.
+The goal of this research is to develop a flexible device but before delving into flexible prototypes we started by designing some rigid prototypes. The rigid prototypes were designed to test the concept of the device and to understand the limitations of the technology.
 
 % -- Subsection 2.1
 \subsection{1st version - Dresda Coils testbed}
-The primary programming language for this research was Python, chosen for its versatility, rich ecosystem, and widespread use in machine learning. Python's readability and extensive libraries facilitated efficient coding and experimentation.
+The first prototype was designed to test the capabilities of the Dresden coils.
+In the previous research done by the HZDR team \cite{HZDR} they tested the coil using a simple piece of flexible magnetic tape as a membrane.
 
-\subsubsection{Dresda Coils}
 \subsubsection{Flexible magnetic membrane}
+This membrane is shaped like a "fish" so the tail can be fixed on a plane and the head can be free to bend up and down.
+
+\begin{figure}
+    \centering
+    \resizebox{0.2\textwidth}{!}{\includegraphics{Chapters/Chapter5/Rigid_Prototypes/Figures/Dresden_test.png}}
+    \caption{Dresden coil HZDR test setup}
+    \label{fig: Dresden_test}
+\end{figure}
+
+When the coil was powered, the magnetic field produced by the coil would repel the membrane and bend it up.
+The coil would be powered with an AC signal at various frequencies, then one would need to keep his pulp suspended at a certain distance over the membrane and feel the vibration produced by the membrane.
+The pulp needed to be suspended at a certain distance to avoid pressing on the membrane, this would have caused the membrane to stop vibrating.
+
 \subsubsection{Adjustable height platform for coil and membrane}
+The most important thing to solve was to find a way to keep the pulp at a certain distance from the membrane.
+Firstly we designed a platform that could keep the finger steady.
+\begin{figure}
+    \centering
+    \resizebox{0.5\textwidth}{!}{\includegraphics{Chapters/Chapter5/Rigid_Prototypes/Figures/finger_holder.png}}
+    \caption{Finger platform}
+    \label{fig: finger_platform}
+\end{figure}
+
+This platform was modeled to have an ergonomic cavity for the finger to rest in and a hole for the pulp to be suspended over the membrane.
+The square hole is large enough to allow the "fish" membrane to move freely.
+Under the hole, there is a large cavity where a mechanism is placed.
+This mechanism is a platform where the coil and membrane can be placed in a configuration similar to the one used in the HZDR experiment.
+The platform can then be raised or lowered to find the right distance between the membrane and the finger pulp.
+\begin{figure}
+    \centering
+    \resizebox{0.5\textwidth}{!}{\includegraphics{Chapters/Chapter5/Rigid_Prototypes/Figures/adj_platform.png}}
+    \caption{Adjustable platform}
+    \label{fig: adj_platform}
+\end{figure}
+The mechanism is a simple screw that can be turned to raise or lower the platform.
+
+\subsubsection{Prototype usability}
+This prototype proved to be pretty finicky to use.
+The main problem was that distance couldn't be easily adjusted as the platform wouldn't remain stable enough on the screw.
+This meant that finding an optimal distance between the pulp and the membrane was difficult, especially because different people have different pulp thicknesses.
+Even if a distance that was good for one person was found, the vibration produced by the membrane was very weak and could barely be felt.
 
 % -- Subsection 2.2
 \subsection{Wearable Rigid Prototypes}
 
 \subsubsection{Finger-Membrane interface}
 
-
-PyTorch is an open-source machine learning framework developed by Facebook's AI Research lab (FAIR). Its design philosophy emphasizes flexibility, enabling researchers and practitioners to tailor datasets and training procedures to specific requirements. The flexibility offered by PyTorch manifests in two key areas: custom datasets and custom training/validation phases. PyTorch supports automatic differentiation, making it easier to implement and experiment with complex neural network architectures. Its community, extensive documentation, and seamless integration with hardware accelerators like GPUs contribute to its popularity in both research and production.
-
-PyTorch facilitates the creation of the custom dataset through the \textit{torch.utils.data. Dataset} class.\\ 
-By inheriting from this class and implementing the \textit{\_\_len\_\_} and \textit{\_\_getitem\_\_} methods, it's been possible to define datasets tailored to data structure and format used. This capability is invaluable when working with diverse data types, such as images or time-series, allowing seamless integration into PyTorch's data loading utilities.
-
-PyTorch's flexibility extends to the training and validation phases, enabling users to define custom training loops, loss functions, and evaluation metrics. This is crucial for experimenting with novel architectures, incorporating domain-specific metrics, or implementing advanced training techniques. The ability to seamlessly integrate custom logic into the training process empowers researchers to push the b
 \subsubsection{Keep the distance from the coil}
 
 \subsubsection{Heat dissipation}
 
-%-----------------------------------
-%	SUBSECTION 3
-%-----------------------------------
-
-%\subsection{Flexible Mat Prototypes}
-
-%\subsubsection{Pandas}
-Pandas is a powerful data manipulation and analysis library for Python. It provides data structures like DataFrames that facilitate the handling of structured data. Pandas excels in data cleaning, manipulation, and exploration tasks, offering a plurality of functions for indexing, merging, grouping, and aggregating data. Its integration with other libraries, such as NumPy, makes it a go-to choice for working with labeled data and time series.
-
-Pandas DataFrames offer a convenient and versatile way to handle tabular data, making them an excellent choice for storing and preprocessing data before creating datasets in PyTorch. The integration between Pandas and PyTorch simplifies the transition from data exploration to model training.
-
-%\subsubsection{NumPy}
-NumPy is a fundamental library for numerical operations in Python. It provides support for large, multi-dimensional arrays and matrices, along with an assortment of high-level mathematical functions to operate on these arrays.
-
-Moreover, NumPy arrays and PyTorch tensors share several similarities, making them interchangeable in many contexts. These similarities contribute to a smooth integration between the two libraries, facilitating data manipulation and interoperability.\\
-The compatibility between NumPy and PyTorch simplifies data exchange and promotes a cohesive workflow in mixed-library environments.
-
-%-----------------------------------
-%	SUBSECTION 4
-%-----------------------------------
-%\subsection{Visualization Libraries}
-%\subsubsection{Matplotlib and Seaborn}
-Matplotlib is a versatile 2D plotting library for Python. Seaborn is a statistical data visualization library built on top of Matplotlib. It provides a high-level interface for creating attractive and informative statistical graphics. Seaborn simplifies the process of generating complex visualizations with concise syntax. It is particularly useful for exploring relationships in datasets through specific
