@@ -59,7 +59,7 @@ Finally, we wanted to make the device wearable.
 \subsubsection{Finger-Membrane interface}
 After some testing, we found that a good way to decouple the membrane from the coil and better the transmission of vibrations to the finger was to use a small high-performance magnet attached directly to the finger pulp.
 
-For our testing, we used an N42-grade neodymium cylindrical magnet with a diameter of 10mm and a height of 3mm.
+For our testing, we used an N42-grade neodymium cylindrical magnet with a diameter of \textbf{10mm} and a height of \textbf{3mm}.
 This magnet was fixed to the index pulp of the tester using some non-toxic glue and then he would be able to feel substantial vibrations by moving his pulp closer to the powered-on coil (with an AC signal).
 
 Considering this knowledge, we designed a silicon sleeve that could be worn on the finger, this sleeve has a cavity for the magnet to be inserted into and be kept near the skin.
@@ -78,34 +78,71 @@ Considering this knowledge, we designed a silicon sleeve that could be worn on t
 \end{figure}
 
 This silicon sleeve was designed to be scalable for different finger sizes and to be easily worn and removed.
-The part was produced by silicon casting inside a two part 3D printed mold.
+The part was produced by silicon casting inside a two-part 3D printed mold.
 
 The design is composed of three parts:
 \begin{itemize}
-    \item \textbf{Silicon sleeve: } this part was modeled by us on the profile of a real 3d scanned index finger, it can be automatically scaled by specifying the index's width as all the measurements are based on that value.
-    \item \textbf{Magnet hole: } the hole is designed based on the diameter of the magnet and its height. We also had to find the right height tolerance between the magnet and the pulp to avoid that it could press on the finger too much, impeding vibrations.
-    \item \textbf{Mounting wings: } on the sides of the sleeve we have two parallelepidical wings that are used to mount the sleeve to the structure were the coil will be attached (described in the following section). 
+    \item \textbf{Silicon sleeve: } This part was modeled by us on the profile of a real 3d scanned index finger, it can be automatically scaled by specifying the index's width as all the measurements are based on that value.
+    \item \textbf{Magnet hole: } The hole is designed based on the diameter of the magnet and its height. We also had to find the right height tolerance between the magnet and the pulp to avoid that it could press on the finger too much, impeding vibrations.
+    \item \textbf{Mounting wings: } On the sides of the sleeve we have two parallelepidical wings that are used to mount the sleeve to the structure where the coil will be attached (described in the following section). 
 \end{itemize}
 
-Another design problem to solve was the positioning of the magnet, as the design had the goal to be adaptable to differest finger tip sizes we had to consider fingers with widths varying from
-For the magnet position we chose the center to be placed on the symmetry axis of the pulp, then we based the design on index fingers with widths between 13 and 20mm \cite{index_fingers_width}.
-That meant that for 13mm fingers the magnet size was barely smaller than the finger's width, so knowing that the finger tends to get even narrower toward the tip, we had to place the magnet center closer to the first interphalangeal fold rather than to the pulp's center.
+Another design problem to solve was the positioning of the magnet, as the design had the goal of being adaptable to different fingertip sizes, we had to consider multiple finger widths. 
+For the magnet position we chose the center to be placed on the symmetry axis of the pulp, then we based the design on index fingers with widths between \textbf{13mm} and \textbf{20mm} \cite{index_fingers_width}.
+That meant that for 13mm fingers, the magnet size (10mm) was barely smaller than the finger's width, so knowing that the finger tends to get even narrower toward the tip, we had to place the magnet center closer to the first interphalangeal fold rather than to the pulp's center.
 
-The part went through multiple iterations to land on the right thicknesses for the sleeve itself, it needed to be thin enough to be adaptable to multiple fingers (considering similar widths) but not thoo thin as to be durable enough. 
+\subsubsection{Sleeve production}
+The sleeve was produced by silicon casting inside a two-part 3D printed mold:
+\begin{itemize}
+    \item \textbf{Mold cavity: } The cavity was designed based on the 3D model of an index finger, with the addition of a small surface to produce the opening for the fingernail (the part in grey in figure \ref{fig: mold_cavity})and half of the hole necessary to create the magnet cavity.
+    \begin{figure}
+        \centering
+        \resizebox{0.5\textwidth}{!}{\includegraphics{Chapters/Chapter5/Rigid_Prototypes/Figures/silicon_finger_mold_cavity.PNG}}
+        \caption{Mold cavity}
+        \label{fig: mold_cavity}
+    \end{figure}
+
+    \item \textbf{Mold core: } The core was designed to be the negative of the cavity, including a part to create the other half of the magnet cavity and mounting wings (the part in light blue in figure \ref{fig: mold_core}).
+    The negative is scaled down a bit to create a casting clearance of about 0.8mm.
+    This part also includes a cap that is screwed on the cavity to keep the core suspended in the silicon.
+    \begin{figure}
+        \centering
+        \resizebox{0.5\textwidth}{!}{\includegraphics{Chapters/Chapter5/Rigid_Prototypes/Figures/silicon_finger_mold_core.PNG}}
+        \caption{Mold core}
+        \label{fig: mold_core}
+    \end{figure}
+\end{itemize}
+
+The part went through multiple iterations to land on the right thicknesses for the sleeve itself, it needed to be thin enough to be adaptable to multiple fingers (considering similar widths) but not so thin as to be durable enough.
+
+The material used for the casting was a two-component silicon rubber from ResChimica.
+We tested two different types of silicon, one with a shore hardness of 12 \cite{R_Pro_10_silicon} and one with a shore hardness of 35 \cite{R_Pro_Fast_silicon}.
+
+From our tests, we found that the silicon with a shore hardness of 35 was too rigid and absorbed too much vibration so we decided to use the softer one.
+The only problem with this softer silicon was its minimum curing time of 3 hours at room temperature which always had to be increased as it never cured completely in that time.
 
 \subsubsection{Keep the distance from the coil}
-We then focused on a structure able to keep the coil at a fixed distance from the slicon sleeve and magnet.
-The design goals for this device were that it's should be lightweight, easily wearable and adaptable to multiple sleeves' sizes.
-After multiple iterations we landed on a three parts design.
-\begin{figure}
-    \centering
-    \resizebox{1\textwidth}{!}{
-        \includegraphics{Chapters/Chapter5/Rigid_Prototypes/Figures/sleeve_holder.png}
-    }
-    \caption{Silicon finger sleeve holder}
-    \label{fig: sleeve_holder}
-\end{figure}
-The first part is the structure were the sleeve can be attached to, this is done by inserting the mounting wings inside the two squared holes on the bottom of the part.
+We then focused on a structure able to keep the coil at a fixed distance from the silicon sleeve and magnet.
+The design goals for this device were that it should be lightweight, easily wearable and adaptable to multiple sleeves' sizes.
+After multiple iterations, we landed on a three-component design.
+\begin{itemize}
+    \item \textbf{Sleeve holder: } This component is the structure where the sleeve can be attached, this is done by inserting the mounting wings inside the two squared holes on the bottom of the part.
+    The circle hole at the center of the component is where the magnet cavity of the sleeve with the magnet inside will be placed.
+    The arch on the component front is present to allow the tip of the finger to support the weight of the structure.
+    \begin{figure}
+        \centering
+        \resizebox{1\textwidth}{!}{
+            \includegraphics{Chapters/Chapter5/Rigid_Prototypes/Figures/sleeve_holder.png}
+        }
+        \caption{Silicon finger sleeve holder}
+        \label{fig: sleeve_holder}
+    \end{figure}
+
+    \item \textbf{Coil trap: } This component is the structure where the coil can be attached, this is done by inserting the coil inside the two squared holes on the bottom of the part.
+\end{itemize}
+
+
+
 
 \subsubsection{Heat dissipation}
 
