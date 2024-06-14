@@ -124,6 +124,16 @@ The only problem with this softer silicon was its minimum curing time of 3 hours
 \subsubsection{Keep the distance from the coil}
 We then focused on a structure able to keep the coil at a fixed distance from the silicon sleeve and magnet.
 The design goals for this device were that it should be lightweight, easily wearable and adaptable to multiple sleeves' sizes.
+
+\begin{figure}
+    \centering
+    \resizebox{1\textwidth}{!}{
+        \includegraphics{Chapters/Chapter5/Rigid_Prototypes/Figures/sleeve_holder_complete.png}
+    }
+    \caption{Explode of the complete silicon finger sleeve holder}
+    \label{fig: sleeve_holder_complete}
+\end{figure}
+
 After multiple iterations, we landed on a three-component design.
 \begin{itemize}
     \item \textbf{Sleeve holder: } This component is the structure where the sleeve can be attached, this is done by inserting the mounting wings inside the two squared holes on the bottom of the part.
@@ -138,11 +148,43 @@ After multiple iterations, we landed on a three-component design.
         \label{fig: sleeve_holder}
     \end{figure}
 
-    \item \textbf{Coil trap: } This component is the structure where the coil can be attached, this is done by inserting the coil inside the two squared holes on the bottom of the part.
+    \item \textbf{Coil trap: } This component is the structure where the coil is inserted. This component is composed of 3 parts, a heatsink, a coil holder and a mask to screw the heatsink to the sleeve holder.
+    The coil is sandwiched between the heatsink (the part in bronze) and the coil holder (the part in grey). Then they are screwed together to the sleeve holder.
+    \begin{figure}
+        \centering
+        \resizebox{1\textwidth}{!}{
+            \includegraphics{Chapters/Chapter5/Rigid_Prototypes/Figures/coil_trap.png}
+        }
+        \caption{Explode of the coil trap}
+        \label{fig: coil_trap}
+    \end{figure}
+    
 \end{itemize}
 
-
-
-
 \subsubsection{Heat dissipation}
+As the coil while active produces a lot of heat, we decided to introduce a heatsink in the design (the part in bronze in figure \ref{fig: coil_trap}).
+The heatsink was made by cutting two small strips from a thin sheet of copper (1mm thick) that are joined together by thermal paste and screws.
+The same screws are also used to keep in place the coil and the coil holder.
+
+For the same heat dissipation reason, we printed all components in ABS as it has a higher melting point than PLA.
+
+\subsubsection{Prototype usability}
+This prototype was much more usable than the previous one.
+The magnet was also kept at the right distance from the coil and the vibrations were much more noticeable, also being wearable made it much easier to use.
+The biggest problem of this prototype was the silicon sleeve, as the silicon tends to absorb some of the vibrations produced by the coil and the softness of the material made the mounting mechanism a bit finicky.
+We also had to add a small blowing fan and another part to the heatsink (as we can see in figure \ref{fig: rigid_prot}) to keep the coil cool as it would heat a lot after a few minutes of use.
+
+\begin{figure}
+    \centering
+    \resizebox{1\textwidth}{!}{
+        \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{Chapters/Chapter5/Rigid_Prototypes/Figures/rigid_prot_btm.png}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{Chapters/Chapter5/Rigid_Prototypes/Figures/rigid_prot_top.png}        
+        \end{subfigure}
+    }
+    \caption{Bottom and top view of the real prototype}
+    \label{fig: rigid_prot}
+\end{figure}
 
