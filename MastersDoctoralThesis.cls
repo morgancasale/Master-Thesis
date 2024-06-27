@@ -216,6 +216,7 @@
 \NewDocumentCommand{\supervisor}{m}{\newcommand{\supname}{#1}}
 \NewDocumentCommand{\cosupervisor}{m}{\newcommand{\cosupname}{#1}}
 \NewDocumentCommand{\cocosupervisor}{m}{\newcommand{\cocosupname}{#1}}
+\NewDocumentCommand{\cococosupervisor}{m}{\newcommand{\cococosupname}{#1}}
 \NewDocumentCommand{\examiner}{m}{\newcommand{\examname}{#1}}
 \NewDocumentCommand{\degree}{m}{\newcommand{\degreename}{#1}}
 \NewDocumentCommand{\addresses}{m}{\newcommand{\addressname}{#1}}

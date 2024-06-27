@@ -1,47 +1,18 @@
 
-\chapter{Discussion and conclusions}
+\chapter{Conclusions and Future Work}
 \label{Chapter6}
 %----------------------------------------------------------------------------------------
 %	SECTION 1
 %----------------------------------------------------------------------------------------
     
-\section{Challenges in On-Board AI Systems for Space Missions}
+\section{A technology difficult to drive}
 
-AI algorithms in on-board space applications encounter significant challenges related to both verifiability and computational load, crucial factors for the success and safety of space missions.
+\section{Low force output}
 
-\subsection{Verifiability Issues}
-AI algorithms, particularly those employing deep learning, are characterized by intricate architectures and numerous parameters. The complexity of these models makes it challenging to provide comprehensive assurance of their correctness. In space applications, where system failures are not an option, ensuring the verifiability of AI algorithms becomes predominant.
+\section{Alternative applications}
 
-Many AI models, including deep neural networks, lack inherent explainability. Understanding the decision-making process within these "black box" models is essential to verify their reliability. Achieving transparency in AI decision logic is critical in scenarios where the basis for decision-making must be interpretable, such as during critical space maneuvers.
+\section{Alternative signals}
 
-Space environments are dynamic and may exhibit uncertainties. AI algorithms designed for adaptability and learning might introduce challenges in predicting their behavior accurately. Verifying the robustness of adaptive AI systems in the face of unforeseen conditions is a persistent concern.
+\section{Future work}
 
-\subsection{Computational Issues}
-On-board space systems typically operate with limited computational resources due to factors such as size, weight, and power constraints (SWaP). Implementing AI algorithms with demanding computational requirements may strain available resources, affecting the overall efficiency of the system.
-
-Certain space applications, such as autonomous navigation or hazard avoidance, demand real-time decision-making. AI algorithms with high computational loads may struggle to meet these stringent timing constraints. Delays in processing could lead to missed opportunities or, in critical situations, mission failure.
-
-In addition to computational power, energy efficiency is a crucial consideration. Prolonged missions and the reliance on energy-harvesting sources necessitate AI algorithms that balance computational complexity with energy consumption, ensuring sustained and reliable operation.
-
-Addressing these challenges requires a multidisciplinary approach involving AI researchers, space engineers, and mission planners. Techniques such as formal verification, explainable AI, and hardware optimization are essential to enhance the verifiability and efficiency of AI algorithms in on-board space applications.
-
-\section{Results Analysis}
-In the broader context, the multi-model configuration emerges as the more robust and adaptable option, showcasing superior performance on the test set and demonstrating effective generalization capabilities to previously unseen data. The overall system score on the test dataset is $S$ = 0.0447, primarily affected by the translation component $S_T$ = 0.0390, as opposed to the relatively lower contribution from the rotation aspect, $S_R$ = 0.0057. The noteworthy aspect is the necessity of prioritize the minimization of translation errors, since, in proximity to the target, precise translation is crucial for accurate maneuvering.
-Moreover, rotation pose can be more effectively predicted with the incorporation of a navigation filter. This strategic integration allows for a corrective mechanism, compensating for rotational discrepancies and enhancing the system's overall precision in navigating close quarters.
-
-\section{Possible Improvements}
-\label{Chapter6/Improv}
-
-
-Another option would be using multiple models also for the \textit{Landmark Regression} module, which are able to identify a target set of landmarks in farther positions and a second set in closer distances to the target, in order to keep the number of identified points in the image frame as greater as possible.\\
-This implementation would also lead to a more accurate pose estimation in positions closer to the minimum distance analyzed in the experiments (from $40 cm$ to $20cm$). A well-performed pose estimation in positions very close to the target would help to minimize any errors introduced by camera distortions.
-
-\subsection{Landmark Mapping Sensitivity}
-The assessment of trajectories such as \textit{Less\_Difficult\_Trajectory} and \textit{Difficult\_Trajectory} is conducted with a noteworthy consideration: the assumption of zero prediction error for the points' location in the image. This assumption is made out of necessity since the \textit{Landmark Regression} module encounters difficulties in identifying all the landmarks expected to be present in the image frames. Consequently, the input data for the \textit{Landmark Mapping} module is marked by a heightened sensitivity, as the accuracy of its predictions is contingent upon the successful identification of landmarks by the preceding module.
-
-A potential avenue for improvement involves an expansion of the training dataset to incorporate instances where certain landmarks remain unidentified due to inherent challenges in their recognition. This strategy aims to enhance the model's resilience to scenarios where specific landmarks pose persistent issues during identification. By exposing the model to a more diverse range of challenges and including cases of landmark ambiguity, it is anticipated that the trained model will develop a more robust understanding, leading to improved performance, particularly in situations mirroring real-world complexities. This adjustment aligns with the overarching goal of fortifying the system's adaptability and generalization capabilities, addressing challenges posed by varying environmental conditions and unforeseen factors during autonomous space applications.
-
-Moreover, to fortify the robustness of the system, there is a prospect to introduce a more sophisticated pre-processing system. This advanced system would be designed to mitigate the impact of varying image light conditions on landmark identification. By incorporating techniques such as adaptive image enhancement, contrast normalization, or even exploring deep learning-based methods for illumination invariance, the model could become less susceptible to fluctuations in lighting. Such enhancements would foster greater reliability in landmark identification by the \textit{Landmark Regression} module, subsequently improving the overall accuracy of the \textit{Landmark Mapping} module. This proactive approach anticipates and addresses challenges associated with real-world scenarios where illumination conditions can be unpredictable, ensuring the model's effectiveness across diverse operational environments in on-board space applications.
-
-\section{Conclusions}
-This project presents a dedicated monocular pose estimation framework designed for spaceborne objects, emphasizing its applicability to satellite rendezvous maneuvers. The framework capitalizes on the strengths of deep neural networks, seamlessly integrating feature learning and establishing robust 2D-3D correspondence mapping. Notably, the incorporation of HRNet, known for its high-resolution image representation, significantly contributes to the precision of pose predictions and the subsequent refinement process. The framework further demonstrates its efficiency by employing geometric optimization techniques, ensuring accurate alignment of point sets and enhancing the overall robustness of the pose estimation system.
+\subsubsection{Custom coil design}
