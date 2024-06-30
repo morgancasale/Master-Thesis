@@ -1,15 +1,19 @@
 \section{Modelling of the Entire System}
-To be able to produce vibrations using the magnetic field produced by the coil we need to introduce to the system an object that can react to the magnetic field. As the magnetic field of the coil is very feeble we can use as the object Neodymium magnets, these are permanent magnets with a very strong internal magnetic field for their size.
-Using small ones and with the right pole facing the coil (same polarity as the generated magnetic field) it will be able to repel them and make them vibrate.
-Then to constrain the motion of the magnet and make it only move in the z-axis we have to add to the system a flexible membrane.
+To be able to produce vibrations using the magnetic field produced by the coil we need to introduce to the system an object that can react to the magnetic field. As the magnetic field of the coil is very feeble we can use \textbf{Neodymium magnets}, these are permanent magnets with a very \textbf{strong internal magnetic field} for their size.
+With the right pole facing the coil (same polarity as the generated magnetic field) it will be able to \textbf{repel} them and make them vibrate.
+Then to constrain the motion of the magnet and make it only move in the z-axis we have to add to the system a \textbf{flexible membrane}.
 
-We can now model the entire system using a bond graph, as shown in figure \ref{fig: Total_bond-graph}.
-\begin{figure}
-    \centering
-    \resizebox{.9\linewidth}{!}{\input{Chapters/Chapter2/Modelling_of_Entire_System/Figures/bond-graph.tex}} % TODO: Da fare bene
-    \caption{Bond graph of the coil-magnet-membrane system.}
-    \label{fig: Total_bond-graph}
-\end{figure}
+\begin{samepage}
+    The entire system can be modeled using a bond graph, as shown in figure \ref{fig: Total_bond-graph}.
+    \nopagebreak
+
+    \begin{figure}[H]
+        \centering
+        \resizebox{.9\linewidth}{!}{\input{Chapters/Chapter2/Modelling_of_Entire_System/Figures/bond-graph.tex}} % TODO: Da fare bene
+        \caption{Bond graph of the coil-magnet-membrane system.}
+        \label{fig: Total_bond-graph}
+    \end{figure}
+\end{samepage}
 
 In the next subsections, we will analyze the physical laws that govern the behavior of the system and how to model them to create this bond graph.
 

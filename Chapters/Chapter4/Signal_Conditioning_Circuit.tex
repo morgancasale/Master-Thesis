@@ -1,27 +1,34 @@
 \section{Signal Conditioning Circuit}
 \label{Signal_Conditioning_Circuit}
-We know that the controller DAC outputs a voltage between 0 and 3.3V, the power stage has a gain of 10, and that to drive Flexar's coils, at their rated maximum power of 0.8W, we need to provide a voltage of about 6V at a current of 0.2A. \\
-A very simple solution is to implement a variable voltage divider to adjust the amplitude of the signal coming from the DAC.
-We chose a maximum dividing factor of 10 to match the power stage gain.
+We know that the controller DAC \textbf{outputs a voltage} between \textbf{0} and \textbf{3.3V}, the power stage has a \textbf{gain of 10}, and that to drive Flexar's coils, at their rated \textbf{maximum power of 0.8W}, we need to provide a voltage of about \textbf{6V} at a current of \textbf{0.2A}. \\
+A very simple solution is to implement a \textbf{variable voltage divider} to adjust the amplitude of the signal coming from the DAC.
 
-\begin{figure}[!ht]
-    \centering
-    \resizebox{.7\linewidth}{!}{\input{Chapters/Chapter4/Figures/cond_circuit.tex}}
-    \caption{Signal conditioning circuit.}
-    \label{fig:cond_circuit}
-\end{figure}
+\begin{samepage}
+    We chose a \textbf{maximum dividing factor of 10} to match the power stage gain.
+    \nopagebreak
 
-Where: 
-\begin{itemize}
-    \item $V_{DAC}$ is the voltage coming from the controller DAC [0,3.3]V.
-    \item $R_1$ is a 100$k\Omega$ potentiometer to adjust the amplitude of the signal.
-    \item $R_2$ is a 10$k\Omega$ resistor to set the maximum amplitude of the signal.
-    \item $V_{out}$ is the output voltage of the conditioning circuit [0, 0.33]V.
-\end{itemize}
+    \begin{figure}[H]
+        \centering
+        \resizebox{.5\linewidth}{!}{\input{Chapters/Chapter4/Figures/cond_circuit.tex}}
+        \caption{Signal conditioning circuit.}
+        \label{fig:cond_circuit}
+    \end{figure}
+    \nopagebreak
+
+    Where:
+    \nopagebreak
+
+    \begin{itemize}
+        \item $V_{DAC}$ is the voltage coming from the controller DAC [0,3.3]V.
+        \item $R_1$ is a 100$k\Omega$ potentiometer to adjust the amplitude of the signal.
+        \item $R_2$ is a 10$k\Omega$ resistor to set the maximum amplitude of the signal.
+        \item $V_{out}$ is the output voltage of the conditioning circuit [0, 0.33]V.
+    \end{itemize}
+\end{samepage}
 
 The output voltage of the conditioning circuit is given by the following formula:
 \begin{equation}
     V_{out} = V_{DAC} \cdot \frac{R_1}{R_1 + R_2}
 \end{equation}
 
-The values of $R_1$ and $R_2$ have been chosen to be 100$k\Omega$ and 10$k\Omega$ respectively, as they are standard values, provide a good range of adjustment for the amplitude of the signal, and their order is big enogh to work with the provided DAC current of 12mA.
+The values of $R_1$ and $R_2$ have been chosen to be 100$k\Omega$ and 10$k\Omega$ respectively, as they are standard values, provide a good range of adjustment for the amplitude of the signal, and their order is \textbf{big enough} to work with the provided DAC current of 12mA.
