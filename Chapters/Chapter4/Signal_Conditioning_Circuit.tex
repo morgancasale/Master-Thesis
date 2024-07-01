@@ -9,7 +9,9 @@ A very simple solution is to implement a \textbf{variable voltage divider} to ad
 
     \begin{figure}[H]
         \centering
-        \resizebox{.5\linewidth}{!}{\input{Chapters/Chapter4/Figures/cond_circuit.tex}}
+        \resizebox{.5\linewidth}{!}{
+            \input{Chapters/Chapter4/Figures/cond_circuit.tex}
+        }
         \caption{Signal conditioning circuit.}
         \label{fig:cond_circuit}
     \end{figure}
@@ -27,8 +29,8 @@ A very simple solution is to implement a \textbf{variable voltage divider} to ad
 \end{samepage}
 
 The output voltage of the conditioning circuit is given by the following formula:
-\begin{equation}
+\begin{equation*}
     V_{out} = V_{DAC} \cdot \frac{R_1}{R_1 + R_2}
-\end{equation}
+\end{equation*}
 
 The values of $R_1$ and $R_2$ have been chosen to be 100$k\Omega$ and 10$k\Omega$ respectively, as they are standard values, provide a good range of adjustment for the amplitude of the signal, and their order is \textbf{big enough} to work with the provided DAC current of 12mA.

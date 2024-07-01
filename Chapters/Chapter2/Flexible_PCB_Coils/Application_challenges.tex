@@ -9,9 +9,9 @@ PCBs are created by etching very \textbf{thin copper traces} on a substrate, in 
 
 \begin{samepage}
     The coil can be considered as a very long strand of a very thin copper so its resistance can be calculated using the Ohm Law
-    \begin{equation}
+    \begin{equation*}
         R=\rho \cdot \frac{L}{A}
-    \end{equation}
+    \end{equation*}
     \nopagebreak
 
     Where:
@@ -25,9 +25,9 @@ PCBs are created by etching very \textbf{thin copper traces} on a substrate, in 
 
 \begin{samepage}
     Then to find the length of the copper traces we can use the approximated formula \cite{Length_of_a_Spiral}
-    \begin{equation}
+    \begin{equation*}
         L = N \pi \frac{D+d}{2}
-    \end{equation}
+    \end{equation*}
     \nopagebreak 
 
     Where:
@@ -40,9 +40,9 @@ PCBs are created by etching very \textbf{thin copper traces} on a substrate, in 
 
 \begin{samepage}
     The tracks' cross-section is a \textbf{rectangle} so the area can be calculated as
-    \begin{equation}
+    \begin{equation*}
         A = w \cdot t
-    \end{equation}
+    \end{equation*}
     \nopagebreak
         
     Where:
@@ -71,9 +71,9 @@ Also, the resistance of the coil is \textbf{dependent on the Temperature} of the
     The temperature coefficient of resistivity of copper is $\alpha = 0.003862 \frac{1}{^{\circ}C}$ so the resistivity of copper at a certain temperature can be calculated as
     \nopagebreak
 
-    \begin{equation}
+    \begin{equation*}
         \rho(T) = \rho_{T_{ref}} \cdot (1 + \alpha \cdot (T - T_{ref}))
-    \end{equation}
+    \end{equation*}
     \nopagebreak
         
     Where: 
@@ -96,9 +96,9 @@ Also, the resistance of the coil is \textbf{dependent on the Temperature} of the
     \nopagebreak
 
     The heat dissipated by a coil can be calculated using the formula
-    \begin{equation}
+    \begin{equation*}
         P = I_{RMS}^2 R = \frac{V_{RMS}^2}{R}
-    \end{equation}
+    \end{equation*}
     \nopagebreak
 
     Where:
@@ -156,9 +156,9 @@ The main parasitic effects that can occur in a coil are:
         \nopagebreak
 
         The reactance of a coil can be calculated using the formula
-        \begin{equation}
+        \begin{equation*}
             X_L = 2 \pi f L
-        \end{equation}
+        \end{equation*}
         \nopagebreak
             
         Where:
@@ -170,9 +170,9 @@ The main parasitic effects that can occur in a coil are:
         \nopagebreak
 
         Then the impedance of the coil can be calculated as
-        \begin{equation}
+        \begin{equation*}
             Z = \sqrt{R_{DC}^2 + X_L^2}
-        \end{equation}
+        \end{equation*}
     \end{samepage}
 
     \item \textbf{Skin effect:} This effect is due to the current flowing through a conductor tending to flow on the surface of the conductor. This gives rise to a thin layer inside the conductor where all the current flows. As a result, the effective resistance of the conductor increases. This effect is more pronounced at higher frequencies.
@@ -185,9 +185,9 @@ The main parasitic effects that can occur in a coil are:
     \end{figure}
 
     The thickness of this area is called the \textbf{skin depth} and can be calculated using the formula
-    \begin{equation}
+    \begin{equation*}
         \delta = \sqrt{\frac{\rho}{\mu \pi f}}
-    \end{equation}
+    \end{equation*}
             
     Where:
     \begin{itemize}
@@ -200,13 +200,13 @@ The main parasitic effects that can occur in a coil are:
         The effective resistance of the conductor can be derived from the skin depth using Dowell's equation \cite{AC_res_coils}
         \nopagebreak
 
-        \begin{equation}
+        \begin{equation*}
             R_{skin} = F_{skin} \cdot R_{DC}
-        \end{equation}
+        \end{equation*}
         and
-        \begin{equation}
+        \begin{equation*}
             F_{skin} = \frac{1}{2} (\frac{h}{\delta}) \frac{\sinh(\frac{h}{\delta}) + \sin(\frac{h}{\delta})}{\cosh(\frac{h}{\delta}) - \cos(\frac{h}{\delta})}
-        \end{equation}
+        \end{equation*}
 
         Where:
         \begin{itemize}
@@ -252,9 +252,9 @@ The main parasitic effects that can occur in a coil are:
         The contribution of the proximity effect to the effective resistance of the coil can be calculated using the formula (considering current flowing in the coil $I_{ex} = 1A$) \cite{AC_res_Optimization}
         \nopagebreak
 
-        \begin{equation}
+        \begin{equation*}
             R_{proximity} = \frac{1}{12} h \sigma \pi^2 f^2 B_n^2 w^3
-        \end{equation}
+        \end{equation*}
         \nopagebreak
         
         Where:
@@ -268,9 +268,9 @@ The main parasitic effects that can occur in a coil are:
     \end{samepage}
 
     We can also approximate $F_{proximity}$ ($F_{proximity} = R_{proximity}/R_{DC}$) as
-    \begin{equation}
+    \begin{equation*}
         F_{proximity} = \frac{F_{skin}}{3}
-    \end{equation}
+    \end{equation*}
 
     So when the contribution of the skin effect is negligible, the proximity effect will be \textbf{negligible} as well.
 

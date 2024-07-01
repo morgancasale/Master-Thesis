@@ -44,7 +44,9 @@ As we specified before we decided to implement a power stage with a gain of 10, 
 
 \begin{figure}[H]
     \centering
-    \resizebox{.6\linewidth}{!}{\input{Chapters/Chapter4/Figures/non-inv_ampl.tex}}
+    \resizebox{.6\linewidth}{!}{
+        \input{Chapters/Chapter4/Figures/non-inv_ampl.tex}
+    }
     \caption{Inverting amplifier circuit.}
     \label{fig:non-inv_ampl}
 \end{figure}
@@ -53,9 +55,9 @@ As we specified before we decided to implement a power stage with a gain of 10, 
     The gain can be calculated using the following formula:
     \nopagebreak
 
-    \begin{equation}
+    \begin{equation*}
         A = \frac{V_{out}}{V_{in}} = -\frac{R_f}{R_1}
-    \end{equation}
+    \end{equation*}
     \nopagebreak
 
     Where:
@@ -81,7 +83,9 @@ While implementing the amplifier circuit, we noticed that the output signal had 
 
     \begin{figure}[H]
         \centering
-        \resizebox{.6\linewidth}{!}{\input{Chapters/Chapter4/Figures/non-inv_ampl_filter.tex}}
+        \resizebox{.6\linewidth}{!}{
+            \input{Chapters/Chapter4/Figures/non-inv_ampl_filter.tex}
+        }
         \caption{Inverting amplifier circuit with the low-pass filter.}
         \label{fig:non-inv_ampl_filter}
     \end{figure}
@@ -91,9 +95,9 @@ While implementing the amplifier circuit, we noticed that the output signal had 
     The cutoff frequency of the filter can be calculated using the following formula:
     \nopagebreak
 
-    \begin{equation}
+    \begin{equation*}
         f_c = \frac{1}{2\pi R_f C_f}
-    \end{equation}
+    \end{equation*}
     \nopagebreak
 
     Where:
@@ -111,7 +115,7 @@ To achieve this, we chose a capacitor of \textbf{680pF}, as it is a standard val
 
 \begin{figure}[H]
     \centering
-    \resizebox{.7\linewidth}{!}{\includegraphics{Chapters/Chapter4/Figures/irl_power_stage.jpg}}
+    \includegraphics[width = 0.7\linewidth]{Chapters/Chapter4/Figures/irl_power_stage.jpg}
     \caption{Picture of the implemented power stage.}
     \label{fig:IRL_power_stage}
 \end{figure}

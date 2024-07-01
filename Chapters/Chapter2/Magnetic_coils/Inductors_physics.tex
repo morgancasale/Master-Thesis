@@ -8,9 +8,9 @@ All \textbf{conductors have some inductance}, which may have either desirable or
     
     \nopagebreak
 
-    \begin{equation}
+    \begin{equation*}
         L = \frac{\Phi(i)}{i} \label{eq: Inductance_&_flux}
-    \end{equation}
+    \end{equation*}
 
     \nopagebreak
 
@@ -26,23 +26,23 @@ All \textbf{conductors have some inductance}, which may have either desirable or
 When a current signal is applied to an inductor, a flux is generated.
 Then, considering Faraday's law of induction, any \textbf{change in flux} through a circuit induces an \textbf{electromotive force} ${\mathcal {E}}$, proportional to the rate of change of flux:
 
-\begin{equation}
+\begin{equation*}
     {\mathcal {E}} = -L \frac{d\Phi(t)}{dt}
-\end{equation}
+\end{equation*}
 
 We also know that by Lenz's law, the voltage across the inductor can be calculated as:
 
-\begin{equation}
+\begin{equation*}
     V = -L \frac{di}{dt}
-\end{equation}
+\end{equation*}
 
 Inductors resist changes in current due to the magnetic field they generate when current passes through them. When we apply a \textbf{sinusoidal signal} to our inductor, the current will be continuously \textbf{changing direction}. The \textbf{inductor's opposition} to these changes is represented as \textbf{reactance}.
 
 Inductive reactance (\(X_L\)) is measured in ohms and is calculated using the formula:
 
-\begin{equation}
+\begin{equation*}
     X_L = 2\pi fL
-\end{equation}
+\end{equation*}
 
 Where:
 \begin{itemize}
@@ -54,11 +54,15 @@ Where:
 \begin{samepage}
     We can then calculate the total impedance of the inductor as
     \nopagebreak
-    \begin{equation}
+
+    \begin{equation*}
         Z = \sqrt{R^2 + X_L^2}
-    \end{equation}
+    \end{equation*}
     \nopagebreak
+
     Where:
+    \nopagebreak
+
     \begin{itemize}
         \item \( Z \) is the total impedance [\(\Omega\)]
         \item \( R \) is the resistance of the inductor [\(\Omega\)]
@@ -96,9 +100,9 @@ We use the \textbf{RMS values} because they \textbf{allow us to compare} the pow
 
 \begin{samepage}
     For DC signals these values are equal to the DC one, while for sinusoidal signals $V_{RMS}$ can be calculated as:
-    \begin{equation}
+    \begin{equation*}
         V_{RMS} = \sqrt{\frac{1}{T} {\int_{T}^{0} {[f(t)]}^2\, {\rm d}t}}
-    \end{equation}
+    \end{equation*}
     \nopagebreak
 
     Where:
@@ -110,9 +114,9 @@ We use the \textbf{RMS values} because they \textbf{allow us to compare} the pow
 \end{samepage}
 
 Then in case we're dealing with AC signals having a DC offset we can use the formula
-\begin{equation}
+\begin{equation*}
     V_{RMS_{AC+DC}} = \sqrt{V_{DC}^2 + V_{RMS_{AC}}^2}
-\end{equation} 
+\end{equation*} 
     
 \begin{samepage}
     Some formulas for important waveforms:
@@ -120,7 +124,9 @@ Then in case we're dealing with AC signals having a DC offset we can use the for
 
     \begin{figure}[H]
         \centering
-        \resizebox{.9\linewidth}{!}{\input{Chapters/Chapter2/Magnetic_coils/Figures/RMS_table.tex}}
+        \resizebox{.9\linewidth}{!}{
+            \input{Chapters/Chapter2/Magnetic_coils/Figures/RMS_table.tex}
+        }
         \caption{RMS values for different waveforms.}
         \label{fig:RMS_table}
     \end{figure}
