@@ -1,17 +1,20 @@
 \section{Thesis objective}
 
-In the expanse of space, satellite missions and on-orbit services have become critical assets, serving a myriad of applications including Earth observation, global communication, and scientific research.
+The world of haptics is an exciting field in the world of robotics, it was born from the will to bridge even further the digital world with the real one.
+After digitalizing the sense of sight and hearing, the sense of touch is the next logical frontier to conquer.
+The sense of touch is a very important sense for humans, it is the first sense that develops in the womb and it is the first sense that is used by a newborn to explore the world.
+It is also the sense that is the most difficult to replicate in a virtual environment.
 
-The progressive introduction of AI algorithms into various environments, including space applications, represents a significant leap forward in technological advancement. In the context of pose estimation in space, the incorporation of AI brings a multitude of benefits that enhance the  autonomy of satellite operations.
+In past years there has been a lot of research in the field of haptics, but the field is still in its infancy.
+Even if the current best haptic devices are able to reproduce vibration, force and temperature cues to the user, they are still far from being able to replicate the sense of touch realistically.
 
-In recent years, we've witnessed a rapid proliferation of on-orbit satellites, driven by advancements in technology and the need for enhanced space services. As the number of these satellites continues to rise, the complexities associated with their safe and effective navigation, rendezvous, and scientific missions have grown in tandem. This is where AI shines, as it steps in to revolutionize the field of satellite pose estimation.
+The most important components of haptics are vibrations and forces, they are the most common cues that are used to convey information to the user.
+The generation of these types of cues is usually handled by piezoelectric actuators as they can generate vibrations with a high bandwidth (especially in the high range) and precision exerting notable force.
 
-AI algorithms, equipped with their machine learning capabilities, enable satellites to process vast amounts of data from onboard sensors with remarkable precision and efficiency. This means an elevated level of accuracy in determining a satellite's position, orientation, and trajectory. But the benefits go beyond mere precision.
+The only drawbacks of piezoelectric actuators are that they are rigid components, they cannot be bent or stretched, and they are not able to generate forces in the low range.
 
-AI algorithms, equipped with their machine learning capabilities, enable satellites to process vast amounts of data from onboard sensors with remarkable precision and efficiency. One remarkable development is the ability to estimate a satellite's position and orientation using just a single camera, eliminating the need for a stereocamera setup. This innovation not only enhances accuracy but also reduces hardware complexity, making satellite design more cost-effective. AI-driven monocular camera-based pose estimation empowers satellites to autonomously process visual data, adjust to dynamic orbital environments, and make informed decisions, even in the midst of complex maneuvers, ensuring the mission's success and safety.
+The objective of this thesis is to study a different type of actuator, voice coils based on flexible coils, and to compare them with piezoelectric actuators.
+The main advantage of voice coils is that they can generate vibration with enough force also at low frequencies. 
+In this research, we want to understand if we can create a haptic device that can be stretchable and possibly wearable by using flexible coils.
 
-Moreover, the increased autonomy provided by AI minimizes the need for constant human intervention and ground control. This not only reduces operational costs but also allows human operators to focus on more strategic aspects of the mission, enhancing productivity and mission efficiency. As we look to the future, AI algorithms promise to usher in a new era of space exploration and satellite operations.
-
-In summary, the progressive introduction of AI algorithms in space applications, particularly in pose estimation, opens the door to enhanced accuracy, real-time adaptability, autonomy, and overall mission efficiency. This transformative technology propels us closer to unlocking the full potential of space exploration and satellite services.
-
-The objective of this thesis is to implement the rendezvous of a collaborative satellite using AI algorithms, with a particular emphasis on their applications in mono camera-based visual pose estimation. The focus is specifically directed towards a detailed analysis of rendezvous operations within the 200-20cm distance range from a non-cooperative satellite. This project delves into the critical aspects of pose estimation throughout the entire trajectory of the rendezvous process, extending from the initial approach to the final berthing phase.
+We will study the strengths and weaknesses of such type of actuator and propose multiple designs for a haptic device created with this technology.
