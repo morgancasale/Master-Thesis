@@ -5,7 +5,7 @@
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width = 0.4\linewidth]{Chapters/Chapter2/Modelling_of_Entire_System/Figures/Model-of-two-soft-fingers-grasping-the-object.png}
+        \includegraphics[width = 0.5\linewidth]{Chapters/Chapter2/Modelling_of_Entire_System/Figures/Model-of-two-soft-fingers-grasping-the-object.png}
         \caption{Model of two soft fingers grasping the object.}
         \label{fig: Finger_grasping_model}
     \end{figure}
@@ -21,3 +21,8 @@ Also, we can \textbf{neglect the friction} between the finger and the device as 
     \caption{Bond graph of the finger grasping model.}
     \label{fig: Finger_grasping_bond_graph}
 \end{figure}
+
+The finger grasping can be modeled as a \textbf{mass-spring-damper} system, where the inertia component is represented by the finger's mass, while the spring and damper represent respectively the stiffness and damping effect of the finger's skin.
+
+Human skin's properties have been studied by a team from the University École Centrale de Lyon, they found it has a stiffness constant ranging between \textbf{47.3 and 128.3 N/m}, and a damping coefficient between \textbf{0.08 and 0.121 Ns/m} \cite{Mech_characteristics_of_human_skin}.
+The mass of the finger varies a lot depending on the finger's size.

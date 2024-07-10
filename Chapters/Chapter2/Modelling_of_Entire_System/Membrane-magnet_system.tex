@@ -80,7 +80,7 @@ We approximate by considering only \textbf{half} of the magnet's \textbf{weight}
     \nopagebreak
 
     \begin{equation*}
-        ks = \frac{P}{\delta_{max}}
+        ks = \frac{P}{\delta_{max}} = \frac{w r}{\delta_{max}}
     \end{equation*}
     \nopagebreak
 
@@ -108,11 +108,10 @@ We approximate by considering only \textbf{half} of the magnet's \textbf{weight}
     \nopagebreak
 
     \begin{itemize}
-        \item $\delta$ is the deflection of the beam [m]
         \item $R_A$ is the reaction force at the origin of the beam [N]
         \item $M_A$ is the moment at the origin of the beam [Nm]
         \item $E$ is the Young's modulus of the material [Pa]
-        \item $I$ is the second moment of inertia of the beam [m\textsuperscript{4}]
+        \item $I_x$ is the second moment of inertia of the beam on the x-axis [m\textsuperscript{4}]
         \item $w$ is the distributed load [N/m]
         \item $c$ is the distance between the origin of the beam and its center [m]
         \item $a$ is the distance between the origin of the beam and the start of the distributed load [m]
@@ -126,7 +125,7 @@ We will only focus on the calculation of the \textbf{second moment of inertia} o
     \nopagebreak
     
     \begin{equation}
-        I_x = \frac{w t^3}{12}
+        I_x = \frac{w_{th} t^3}{12}
         \label{eq: Beam_inertia}
     \end{equation}
     \nopagebreak
@@ -135,8 +134,7 @@ We will only focus on the calculation of the \textbf{second moment of inertia} o
     \nopagebreak
     
     \begin{itemize}
-        \item $I_x$ is the second moment of inertia on the x-axis [m\textsuperscript{4}]
-        \item $w$ is the width of one membrane arm as in figure \ref{fig: Membrane_structure}[m]
+        \item $w_{th}$ is the width of the membrane arms as in figure \ref{fig: Membrane_structure}[m]
         \item $t$ is the thickness of the membrane as in figure \ref{fig: Membrane_structure}[m]
     \end{itemize}
 \end{samepage}
