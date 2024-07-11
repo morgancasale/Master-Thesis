@@ -6,7 +6,7 @@ source_folder = os.getcwd()
 out_folder = "../overleaf"
 
 dir_to_delete = ["__pycache__", ".git", "svg-inkscape"]
-file_ext_to_keep = [".tex", ".bib", ".cls", ".svg", ".png", ".jpg"] # ".png"
+file_ext_to_keep = [".tex", ".bib", ".cls", ".svg", ".png", ".jpg"]
 str_of_file_to_delete = ["Example", "Template"]
 
 def on_rmtree_error(func, path, exc_info):
