@@ -62,7 +62,7 @@ Finally considering the physical characteristics of our coil
     \label{tab: Physical characteristics of a Flexar coil}
 \end{table}
 
-The Length of the tracks (considering both spires) will be $L = 3.4548 m $ and the cross-section area will be $A = 1.7678e-09 m^2$.
+The Length of the tracks (considering both spires) will be $L = 3.4548 m $ and the cross-section area will be $A = 1.7678\cdot10^{9}m^2$.
 As we can observe we have a wire that is both very long and very thin so a high resistance is expected (from the calculation $R = 33.61 \Omega $).
 
 Also, the resistance of the coil is \textbf{dependent on the Temperature} of the coil, as the \textbf{temperature increases} the \textbf{resistance} of the copper \textbf{increases} as well. This is because the resistivity of copper increases with temperature. This is a problem as the coil releases a \textbf{lot of heat} when powered with \textbf{high currents}.
@@ -223,18 +223,18 @@ The main parasitic effects that can occur in a coil are:
     \end{samepage}
 
     \begin{samepage}
-        In the case of the coil we're studying, the skin effect is \textbf{negligible} up to $1e8 Hz$ as the \textbf{thickness} of the flexible PCB's \textbf{traces} is \textbf{very low}.
+        Simulating the skin effect function in the case of Flexar's coils (using the values specified in table \ref{tab: Physical characteristics of a Flexar coil}), we can observe in graph \ref{fig: Fskin of Flexar}, that the skin effect is \textbf{negligible} up to $10^{8} Hz$ as the \textbf{thickness} of the flexible PCB's \textbf{traces} is \textbf{very low}.
         \nopagebreak
 
         \begin{figure}[H]
             \centering
-            \includesvg[draft = false, width = 0.5\textwidth]{Chapters/Chapter2/Flexible_PCB_coils/Figures/Fskin_vs_freq.svg}
+            \includesvg[draft = false, width = 0.6\textwidth]{Chapters/Chapter2/Flexible_PCB_coils/Figures/Fskin_vs_freq.svg}
             \caption[Fskin of Flexar]{Logarithmic plot of the skin effect factor for a flexible PCB coil}
-            \label{fig:Fskin of Flexar}
+            \label{fig: Fskin of Flexar}
         \end{figure}
         \nopagebreak
     
-        But we can observe from the study done on thicker traces' (0.5mm) coils that the skin effect starts to be already noticeable at $1e5 Hz$.
+        But we can observe from graph \ref{fig: Skin_effect__thicker_trace} that the study done on thicker traces' (0.5mm) coils resulted in the skin effect starting to curve upwards already at $10^5 Hz$.
         \nopagebreak
         
         \begin{figure}[H]
