@@ -4,6 +4,8 @@
 **.log
 **.fdb*
 
+!**.xmpdata
+
 /svg-inkscape
 /Figures
 /main.*

@@ -532,10 +532,11 @@ KOMA-script documentation for details.}]{fancyhdr}
 bookmarksopen=false,
 bookmarksopenlevel=0,
 hypertexnames=false,
-colorlinks=false,% Set to false to disable coloring links
-citecolor=green,% The color of citations
-linkcolor=black,% The color of references to document elements (sections, figures, etc)
-urlcolor=mdtRed,% The color of hyperlinks (URLs)
+hidelinks = true,
+colorlinks = false,% Set to false to disable coloring links
+citecolor=LimeGreen,% The color of citations
+linkcolor=mdtRed,% The color of references to document elements (sections, figures, etc)
+urlcolor=RoyalPurple,% The color of hyperlinks (URLs)
 pdfstartview={FitV},
 unicode,
 breaklinks=true,
